@@ -1,12 +1,12 @@
-///week01-3.cpp step02-1 Åª¤J1¦r¦ê char line[2000];
-///­n°t¦X for°j°é if§PÂ_!
+///week01-3.cpp step02-1 è®€å…¥1å­—ä¸² char line[2000]; 
+///è¦é…åˆ forè¿´åœˆ ifåˆ¤æ–·!
 #include <stdio.h>
-char line[2000]; ///«Üªø
+char line[2000]; ///å¾ˆé•·
 int main()
 {
     scanf("%s",  line);
     for(int i=0; i<2000; i++){
-        if( line[i] == '2' ) printf("§ä¨ì2\n");
+        if( line[i] == '2' ) printf("æ‰¾åˆ°2\n");
     }
     return 0;
 }
