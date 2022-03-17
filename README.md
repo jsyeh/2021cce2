@@ -188,3 +188,194 @@ https://github.com/jsyeh/2021cce2
 ```
 
 
+# Week04
+## step01-0
+考試「Tell me the frequencies」的簡化版,只解決Input 及 Output, 老師在考前複習、考後講解同學出錯的地方.zip
+
+```C++
+///Week04-0.cpp 今天的考試題目
+///我們想要解決瘋狂程設裡,Tell me the frequencies
+///先把 Input 利用 while( gets(line) ) 解決
+///再把 Output 的跳行, 利用火車頭 +車廂 +車廂 +車廂
+
+#include <stdio.h>
+char line[2000];
+int main()
+{
+	int t=1;
+	while( gets(line) ){
+		if(t>1) printf("\n");
+		printf("Test Case %d\n", t);
+		t++;
+	}
+	return 0;
+}
+
+```
+
+## step01-1
+上週教完Tell me the frequencies這題,同學還沒有真的搞懂, 所以我們今天再重做一次。這次搭配別人的程式,我們一步步看程式碼從Input,Outpu搞定後, 現在利用字串的迴圈,把字母統計好。最後照著字母順序,從大到小印出來。.zip
+
+```C++
+///Week04-1.cpp step01-1
+///我們想要解決瘋狂程設裡,Tell me the frequencies
+///先用今天考試的程式,解決Input/Output
+///接下來, 便是利用字串的迴圈,來統計字母次數
+///最後, 再依照字母順序, 倒著印出來
+#include <stdio.h>
+char line[2000];
+int main()
+{
+	int t=1;
+	while( gets(line) ){
+		if(t>1) printf("\n");
+
+		int ans[256]={};//賤招
+		for(int i=0; line[i]!=0; i++){
+			char c = line[i];
+			ans[c]++;//字母出現1次
+		}//字串的迴圈,得到每一個字母
+
+		for(int c=128; c>=32; c--){
+			if(ans[c]!=0) printf("%d %d\n", c, ans[c] );
+		}
+
+		t++;
+	}
+	return 0;
+}
+```
+
+
+## step02-1
+最後,頻率從小郅大, 再字母從大到小倒著印,好像完成了
+
+```C++
+///Week04-2.cpp step02-1
+///我們想要解決瘋狂程設裡,Tell me the frequencies
+///最後, 頻率從小到大, 再字母倒著印出來,
+#include <stdio.h>
+char line[2000];
+int main()
+{
+	int t=1;
+	while( gets(line) ){
+		if(t>1) printf("\n");
+
+		int ans[256]={};///賤招
+		for(int i=0; line[i]!=0; i++){
+			char c = line[i];
+			ans[c]++;///字母出現 增加1次
+		}///字串的迴圈,得到每一個字母
+        for(int f=1; f<1000; f++){///頻率從小到大
+            for(int c=128; c>=32; c--){///字母從大到小
+                if(ans[c]==f) printf("%d %d\n", c, ans[c] );
+            }
+        }
+		t++;
+	}
+	return 0;
+}
+```
+
+## step02-2
+使用1到1000的寫法其實有問題。可以更快。因此,蕭立人老師的影片, 是利用 max 出現頻率的最多次數,來當迴圈的上界.zip
+```C++
+///Week04-3.cpp step02-2
+///我們想要解決瘋狂程設裡,Tell me the frequencies
+///最後, 頻率從小到大(1到max), 再字母倒著印出來
+#include <stdio.h>
+char line[2000];
+int main()
+{
+	int t=1;
+	while( gets(line) ){
+		if(t>1) printf("\n");
+
+		int max=0;//一開始沒有頻率的max最大值
+		int ans[256]={};///賤招
+		for(int i=0; line[i]!=0; i++){
+			char c = line[i];
+			ans[c]++;///字母出現 增加1次
+			if(ans[c]>max) max=ans[c];//更新max
+		}///字串的迴圈,得到每一個字母
+
+        for(int f=1; f<=max; f++){///頻率從小到大
+            for(int c=128; c>=32; c--){///字母從大到小
+                if(ans[c]==f) printf("%d %d\n", c, ans[c] );
+            }
+        }
+		t++;
+	}
+	return 0;
+}
+```
+
+## step03-1
+想要把程式變得更快,我們想要排序完再印。不過要怎麼排序呢, 我們要先發明一個結構 struct DATA{char c; int ans;}; 是一組基礎的資料結構, 再用 struct DATA list1; 宣告1個, 或是 struct DATA lists[100]; 宣告100個。請利用CodeBlocks實作看看
+```C++
+///Week04-4.cpp step03-1 struct結構 (方便排序用)
+#include <stdio.h>
+struct DATA{
+    char c;
+    int ans;
+}; ///我們發明一種資料結構,裡面有字母、ans出現次數
+
+struct DATA list1;///一個資料結構的東西
+struct DATA lists[100];///有100個資料結構的東西
+int main()
+{
+    list1.c='A';
+    list1.ans=1;
+
+}
+```
+
+## step03-2
+今天的主題是資料結構的struct結構,所以我們照著課本寫,並將利用sorting的方法來把今天的程式用更有效率的方法秀出來。不過因為停電,最後這個作業就不交了。
+
+```C++
+///Week04-5.cpp step03-3 (因為停電, 下週再續)
+///使用資料結構, 配合 sort排序, 來完成任務
+#include <stdio.h>
+char line[2000];
+struct DATA{
+	char c;
+	int ans;
+} lists[128];
+int main()
+{
+	int t=1;
+	while( gets(line) ){
+		if(t>1) printf("\n");
+
+		int ans[256]={};//賤招
+		for(int i=0; line[i]!=0; i++){
+			char c = line[i];
+			ans[c]++;//字母出現1次
+		}//字串的迴圈,得到每一個字母
+
+		for(int i=0; i<128; i++){
+			lists[i].c=i;
+			lists[i].ans=ans[i];
+		}//先把答案抄進 lists[i]裡面
+		
+		for(int i=0; i<128; i++){
+			for(int j=i+1; j<128; j++){
+				if(lists[i].ans>lists[j].ans || (lists[i].ans==lists[j].ans && lists[i].c<lists[j].c) ){
+					struct DATA temp = lists[i];
+					lists[i]=lists[j];
+					lists[j]=temp;
+				}
+			}
+		}
+
+		for(int i=0; i<128; i++){
+			if(lists[i].ans>0) printf("%d %d\n", lists[i].c, lists[i].ans );
+		}
+
+		t++;
+	}
+	return 0;
+}
+```
