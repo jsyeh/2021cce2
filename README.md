@@ -379,3 +379,187 @@ int main()
 	return 0;
 }
 ```
+
+
+# Week05
+
+## step01-0
+本週考試Tell me the frequencies,考試前複習、考試後示範容易出錯的地方
+```C++
+#include <stdio.h>
+char line[2000];
+int main()
+{
+	int t=1;//1火車頭 +2掛勾車廂 +3掛勾車廂
+	while( gets(line) ){
+		if(t>1) printf("\n");
+		t++;
+	}
+	int ans[256]={};//初始值
+	for(int i=0; line[i]!=0; i++){
+		char c=line[i];
+		ans[c]++;
+	}
+
+	for(int f=1; f<=1000; f++){//印東西時,頻率 1,2,...1000
+		for(int c=128; c>=32; c--){//字母大...小
+			if( ans[c]==f ) printf("%d %d\n", c, ans[c]);
+		}
+	}
+	return 0;
+}
+```
+小心,凡遇到括號的錯誤,忍住不要亂改,靜下來,看一下排版
+
+## step01-1
+今天的主題是排序,老師先複習上週的selection sort選擇排序法,會用到的技巧有(1)陣列宣告、陣列初始值,(2)最後用for迴圈印出排好的答案,(3)左手i,右手j,其中 右手的 for(int j=i+1 容易出錯, (4) if(a[i]大於a[j]) 大小不對就交換是
+```C++
+///week05-1.cpp step01-1 selection sort
+///今天的主題是排序,老師先複習上週的selection sort選擇排序法,會用到的技巧有(1)陣列宣告、陣列初始值,(2)最後用for迴圈印出排好的答案,(3)左手i,右手j,其中 右手的 for(int j=i+1 容易出錯, (4) if(a[i]>a[j]) 大小不對就交換。
+#include <stdio.h> ///排序
+int a[10]={7,8,9, 1,2,3, 6,5,4, 0};
+int main()
+{
+    for(int i=0; i<10; i++){///左手i
+        for(int j=i+1; j<10; j++){///右手j
+            if( a[i] > a[j] ){///大小不對,就交換
+                int temp=a[i];
+                a[i]=a[j];
+                a[j]=temp;
+            }
+        }
+    }
+    for(int i=0; i<10; i++) printf("%d ", a[i] );
+
+    return 0;
+}
+```
+
+
+## step02-1
+接下來複習泡泡排序法。和selection sort一樣是2個迴圈,裡面1個if判斷。但是寫法有點特別,我們先寫裡面的迴圈 for(int i=0; i小於10-1; i++) 裡面再比較 a[i] 及 a[i+1] 其中的 10-1 很難理解,希望大家能搞懂。外面再加上一個for(int k=0; k小於10-1; k++) 跑了10-1次。這個10-1次也要想想,與裡面的理由不一樣
+```C++
+///Week05-2.cpp step02-1 bubble sort
+#include <stdio.h> ///泡泡排序
+int a[10]={7,8,9, 1,2,3, 6,5,4, 0};
+int main()
+{
+    for(int k=0; k<10-1; k++){
+        for(int i=0; i<10-1; i++){
+            if( a[i] > a[i+1] ){///大小不對,就交換
+                int temp=a[i];
+                a[i]=a[i+1];
+                a[i+1]=temp;
+            }
+        }
+        for(int i=0; i<10; i++) printf("%d ", a[i] );
+        printf("\n");
+    }
+
+    return 0;
+}
+```
+
+## step02-2
+step02-2_快速排序qsort(a,100,sizeof(int), comp) 這真的很難懂。尤其是 int comp(裡面有2個咒語的東西) 所以我們先照著做做看。第三節課我們再講解它。
+
+10萬個數字要排,2層迴圈 100億次
+Quick Sort 只要約 90萬次,解決!!!!
+找到1個人放中間,左邊 右邊
+
+```C++
+///Week05-3.cpp 思考,如果陣列的大小是10萬
+///有10萬個數字要排序.... 要跑幾次?
+#include <stdio.h>
+#include <stdlib.h>///qsort()需要它
+int comp(const void *p1, const void *p2)
+{
+    int d1 = *(int*)p1,  d2 = *(int*)p2;
+    if(d1>d2) return +1;
+    if(d1<d2) return -1;
+    if(d1==d2)* return 0;
+}
+int main()
+{
+    int a[100];
+
+    for(int i=0; i<100; i++) printf("%d ", a[i]);
+    printf("\n");
+
+    qsort( a, 100, sizeof(int), comp);
+
+    for(int i=0; i<100; i++) printf("%d ", a[i]);
+    printf("\n");
+}
+
+
+/*
+    for(int k=0; k<100000-1; k++){///99999次, 99999x99999得到約10000000000次
+        for(int i=0; i<100000-1; i++){///99999次
+            if( a[i] > a[i+1] ){///大小不對,就交換
+                int temp=a[i];
+                a[i]=a[i+1];
+                a[i+1]=temp;
+            }
+        }
+        for(int i=0; i<10; i++) printf("%d ", a[i] );
+        printf("\n");
+    }*/
+```
+
+## step03-1
+今天的主題是 Hardwood species 硬木的名字排序, 它有點難,所以我們先把 Input 及 Output 搞定。就像上週考試時教過的 while(gets(line)) 及 火車頭 +車廂 +車廂 +車廂, 另外有在scanf()裡面多讀入2個跳行。還有遇到空白行時 if( line[0]==0 ) break; 請試試看吧
+```C++
+///Week05-4.cpp step03-1 解決 Input
+///(1)用今天考試過的 while(gets(line)) 讀一整行
+///(2)火車頭 +車廂 +車廂 +車廂
+#include <stdio.h>
+char line[40];//一行不超過30字母,所以開40夠大了
+int main()
+{
+	int T;//Test cases有幾個
+	scanf("%d\n\n", &T);//啊!!! 有2個跳行
+
+	for(int t=1; t<=T; t++){
+		if(t>1) printf("\n");
+		printf("現在是第%d堆資料\n", t);
+		while( gets(line) ){
+			//先不做事!!!
+			if( line[0]==0 ) break; //離開迴圈
+		}
+	}
+}
+```
+
+## step03-2
+接下來結合 step02-2 qsort() 及step03-1 題目 InputOutput想把字串排序。不過時間不夠,我們就下週再繼續
+```C++
+///Week05-5.cpp step03-2 結合前2個程式
+#include <stdio.h>
+#include <stdlib.h>///qsort()需要它
+#include <string.h>///strcmp()需要它
+char line[1000000][40]; ///一百萬行,每行40個字母!!!
+int comp(const void *p1, const void *p2)
+{
+    ///int d1 = *(int*)p1,  d2 = *(int*)p2;
+    char *s1 = (char*)p1;
+    char *s2 = (char*)p2;
+    return strcmp(s1,s2);///字串比大小!!!
+}
+int main()
+{
+	int T;//Test cases有幾個
+	scanf("%d\n\n", &T);//啊!!! 有2個跳行
+
+	for(int t=1; t<=T; t++){
+		if(t>1) printf("\n");
+		int N=0;
+		while( gets(line[N]) ){
+			if( line[N][0]==0 ) break; //離開迴圈
+			N++;
+		}
+		qsort( line, N, 40, comp);
+		for(int i=0; i<N; i++) printf("%s\n", line[i]);
+	}
+}
+```
