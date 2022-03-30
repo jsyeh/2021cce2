@@ -13,6 +13,8 @@
 - 最多2的一天
 - 迴文與鏡像文
 - 跳跳馬利歐
+- 計算頻率
+- 統計樹種
 
 # Week01 第01週上課內容
 程式設計二 Week01 2022-02-24
@@ -188,7 +190,14 @@ https://github.com/jsyeh/2021cce2
 ```
 
 
-# Week04
+# Week04 第04週上課內容
+程式設計 Week04 2022-03-17
+0. 考試: Tell me the frequencies簡化版: while gets line
+1. 主題: Tell me the frequencies Q:依序印出 A:從小到大 (長度、最大值)
+2. 分析演算法: 還可以更快嗎?
+3. 主題: struct結構
+4. 點播/複習:教過但不懂的地方
+
 ## step01-0
 考試「Tell me the frequencies」的簡化版,只解決Input 及 Output, 老師在考前複習、考後講解同學出錯的地方.zip
 
@@ -381,7 +390,14 @@ int main()
 ```
 
 
-# Week05
+# Week05 第05週上課內容
+程式設計 Week05 2022-03-24
+0. 考試: Tell me the frequencies
+1. 主題: 排序
+2. 自己寫 selection sort 兩層迴圈
+3. 自己寫 bubble sort 兩層迴圈
+3. 不夠快，改用快速排序法 qsort()
+4. 主題：Hardwood Species 照名字排序分類 
 
 ## step01-0
 本週考試Tell me the frequencies,考試前複習、考試後示範容易出錯的地方
