@@ -579,3 +579,230 @@ int main()
 	}
 }
 ```
+
+
+# Week06
+## step01-0
+考前複習、考後解說易出錯的地方,考試題目是簡化版的 Hardwood Species 的輸入資料
+
+```cpp
+///Week06-0.cpp 解的問題 Hardwood Species 統計它的種類
+#include <stdio.h>
+char line[1000];
+int main()
+{
+	int T;
+	scanf("%d\n\n", &T);
+
+	for(int t=1; t<=T; t++){
+		int N=0;
+		while( gets(line) ){
+			if( line[0]=='\0' ) break;
+			N++;
+		}
+		if(t>1) printf("\n");
+		printf("Test Case %d: %d lines\n", t, N);
+	}
+	return 0;
+}
+```
+## step01-1
+
+今天想要把 Hardwood Species 解出來。第一個步驟,是讀到的字串,都要裝到超大的陣列中。有1百萬棵樹,每顆樹的字串長度是30,我們設大一點 char tree[1000000][40] 再做對應的修改
+
+```cpp
+///Week06-1.cpp 解的問題 Hardwood Species 統計它的種類
+#include <stdio.h>
+///char line[1000];改讀到全部的陣列
+char tree[1000000][40];///Step01 改讀到 tree 的陣列
+///       1百萬棵  40字母
+/// tree[0]  tree[1]   tree[2]   tree[3]
+int main()
+{
+	int T;
+	scanf("%d\n\n", &T);
+
+	for(int t=1; t<=T; t++){
+		int N=0;
+		while( gets(tree[N]) ){ ///while( gets(line) ){
+            if( tree[N][0] == 0) break; ///	if( line[0]=='\0' ) break;
+
+			N++;
+		}
+		if(t>1) printf("\n");
+		printf("Test Case %d: %d lines\n", t, N);
+	}
+	return 0;
+}
+```
+
+## step01-2
+
+接下來利用 qsort() 配合 strcmp() 進行字串排序, 請記得 #include  stdlib.h 及 string.h 要準備好,要自己寫 int compare()函式, 要在 main()裡面呼叫 qsort()並把參數放對。最後印出來看排好的結果。
+
+```cpp
+///Week06-2.cpp 解的問題 Hardwood Species 統計它的種類
+#include <stdio.h>
+#include <stdlib.h>//Step02 qsort()
+#include <string.h>//Step02 strcmp()
+char tree[1000000][40];
+///       1百萬棵  40字母
+int compare( const void *p1, const void *p2 )//Step02
+{
+	char * s1 = (char*)	p1;
+	char * s2 = (char*) p2;
+	return strcmp(s1,s2);
+}
+int main()
+{
+	int T;
+	scanf("%d\n\n", &T);
+
+	for(int t=1; t<=T; t++){
+		int N=0;
+		while( gets(tree[N]) ){ ///while( gets(line) ){
+            if( tree[N][0] == 0) break; ///	if( line[0]=='\0' ) break;
+
+			N++;
+		}
+		if(t>1) printf("\n");
+		//printf("Test Case %d: %d lines\n", t, N);
+
+		qsort( tree, N,    40,     compare );// Step02 字串排序
+		//要排陣列  N個 單位大小  比大小的函式
+
+		for(int i=0; i<N; i++){ //Step02
+			printf("%s\n", tree[i] );//Step02
+		}
+	}
+	return 0;
+}
+```
+
+## step02-1
+為了讓同學對於「字串排序」更熟練,老師挑了一題簡單的字串排序, 讀資料、印資料都簡單, 只專注在考大家 字串排序的地方。
+
+```cpp
+//Week06-3.cpp step02-1 專注在字串排序
+#include <stdio.h>
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char words[1000][50];//陣列
+//        1千字 50字母
+int compare( const void *p1, const void *p2 )
+{
+	char *s1 = (char*) p1;
+	char *s2 = (char*) p2;
+	return strcmp(s1,s2);
+}
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){
+		scanf("%s", words[i] ); //gets( words[i] );
+	}
+
+	qsort( words, N, 50, compare );
+
+	for(int i=0; i<N; i++){
+		printf("%s\n", words[i] );
+	}
+	return 0;
+}
+```
+
+## step02-2
+了解Hardwood Species 想要統計樹木出現的百分比,所以利用 100.0除以N, 便可以印出單一的比例,不過我們還沒有真的數「名字相同的樹」題目
+
+```cpp
+///Week06-2.cpp 解的問題 Hardwood Species 統計它的種類
+#include <stdio.h>
+#include <stdlib.h>//Step02 qsort()
+#include <string.h>//Step02 strcmp()
+char tree[1000000][40];
+int compare( const void *p1, const void *p2 )//Step02
+{
+	char * s1 = (char*)	p1;
+	char * s2 = (char*) p2;
+	return strcmp(s1,s2);	
+}
+int main()
+{
+	int T;
+	scanf("%d\n\n", &T);
+
+	for(int t=1; t<=T; t++){
+		int N=0;
+		while( gets(tree[N]) ){ ///while( gets(line) ){
+            if( tree[N][0] == 0) break; ///	if( line[0]=='\0' ) break;
+            
+			N++;
+		}
+		if(t>1) printf("\n");
+		//printf("Test Case %d: %d lines\n", t, N);
+		
+		qsort( tree, N,    40,     compare );// Step02 字串排序
+		//要排陣列  N個 單位大小  比大小的函式
+		
+		for(int i=0; i<N; i++){ //Step02
+			printf("%s %.4f\n", tree[i], 100.0/N );//Step02
+		}
+	}
+	return 0;
+}
+```
+
+
+## step03-1
+
+最後「比較前後是不是相同」,相同的話 combo++, 不相同的話, 做個了解,把前面一筆的答案印出來,再印出新的開始的字。迴圈的前面印最前面第0筆的樹名,最後迴圈外做最後一筆的收尾。迴圈比對 tree[i-1]及 tree[i] 利用 strcmp(tree[i-1],tree[i])==0 看是否相同。迴圈從1開始
+
+
+這個寫法其實不太好, 應該有更好的解法。不過慢慢來, 慢慢變好即可。
+```cpp
+///Week06-5.cpp Hardwood Species 統計它的種類
+#include <stdio.h>
+#include <stdlib.h>//Step02 qsort()
+#include <string.h>//Step02 strcmp()
+char tree[1000000][40];
+int compare( const void *p1, const void *p2 )//Step02
+{
+	char * s1 = (char*)	p1;
+	char * s2 = (char*) p2;
+	return strcmp(s1,s2);	
+}
+int main()
+{
+	int T;
+	scanf("%d\n\n", &T);
+
+	for(int t=1; t<=T; t++){
+		int N=0;
+		while( gets(tree[N]) ){ ///while( gets(line) ){
+            if( tree[N][0] == 0) break; ///	if( line[0]=='\0' ) break;
+            
+			N++;
+		}
+		if(t>1) printf("\n");
+		
+		qsort( tree, N,    40,     compare );// Step02 字串排序
+		
+		printf("%s ", tree[0] );//先印最前面的樹,沒有答案
+		int combo=1;//有第1棵樹
+		
+		for(int i=1; i<N; i++){ //Step02
+			if( strcmp(tree[i-1],tree[i])==0 ){//tree[i-1] == tree[i]
+				combo++;//相同
+			}else{//不相同,做個了結
+				printf("%.4f\n", combo*100.0/N );
+				printf("%s ", tree[i] );
+				combo=1;//又是新的開始!!!
+			}
+			//printf("%s %.4f\n", tree[i], 100.0/N );//Step02
+		}
+		printf("%.4f\n", combo*100.0/N );
+	}
+	return 0;
+}
+```
