@@ -806,3 +806,211 @@ int main()
 	return 0;
 }
 ```
+
+# Week07
+
+## step01-1
+上課考試前, 老師示範今天的考試題目「字串排序」,,並在考試之後,針對同學錯的地方進行解說
+
+```C++
+//Week07-0.cpp step01-1 
+//今天考字串排序, 老師針對同學錯的地方進行解說
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+char line[2000][80];
+
+int compare( const void *p1, const void *p2)
+{
+	return strcmp( (char*)p1, (char*)p2 );
+}
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){
+		scanf("%s", line[i] );
+	}
+	
+	qsort(line, N, 80, compare );
+	
+	for(int i=0; i<N; i++){
+		printf("%s\n", line[i] );
+	}
+}
+```
+
+## step01-2
+介紹課堂作業中, GitHub 利用 Git指令上傳的作業,有同學寫錯了。
+
+## step01-3
+介紹今天的主角,西班牙情聖 Don Juan, 介紹 Mozart 創作的 Don Giovani, 介紹唐吉訶德, 他們的名字裡都有 Don 這個字, 是西班牙的「先生」的敬稱。接下來聽歌劇裡面的第一幕 
+
+## step02-1
+今天的主角,是Don Giovanni這個情聖,到底喜歡多少女生。我們先利用瘋狂程設,把 UVA 10420 List of Conquests 的 Input 搞定。
+
+
+```C++
+///Week07-1.cpp 解決 UVA10420 List of Conquests
+///step02-1 今天的主角,是Don Giovanni這個情聖,到底喜歡多少女生。
+///我們先利用瘋狂程設,把 UVA 10420 List of Conquests 的 Input 搞定。
+/// Input
+#include <stdio.h>
+char line[2000][80];///和今天考試一樣
+int main()
+{
+	int N;
+	scanf("%d\n", &N);///這後面有個跳行哦
+
+	for(int i=0; i<N; i++){
+		gets( line[i] ); ///遇到空格,scanf()會被斷開。要改用 gets()
+	}
+
+
+	for(int i=0; i<N; i++){
+		printf("%s\n", line[i]);
+	}
+	return 0;
+}
+```
+
+## step02-2
+接續前一個程式, 我們想要把它「照字母順序」排序, 使用了 qsort() 及對應的 compare()函式
+
+```C++
+///Week07-2.cpp step02-2 qsort()
+///step02-2 接續前一個程式, 我們想要把它「照字母順序」排序, 使用了 qsort() 及對應的 compare()函式
+
+#include <stdio.h>
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char line[2000][80];//和今天考試一樣
+int compare( const void *p1, const void *p2 )
+{
+	return strcmp( (char*)p1, (char*)p2 );
+}
+int main()
+{
+	int N;
+	scanf("%d\n", &N);
+
+	for(int i=0; i<N; i++){
+		gets( line[i] ); //遇到空格,scanf()會被斷開,不能用!!!
+	}
+
+	qsort( line, N, 80, compare );
+
+	for(int i=0; i<N; i++){
+		printf("%s\n", line[i]);
+	}
+	return 0;
+}
+```
+
+
+##
+
+```C++
+//Week07-3.cpp 解決 UVA10420 List of Conquests
+// step02-3 國家名   人名(很多空格)
+//          scanf()  gets()
+#include <stdio.h>
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char line[2000][80];//和今天考試一樣
+int compare( const void *p1, const void *p2 )
+{
+	return strcmp( (char*)p1, (char*)p2 );
+}
+int main()
+{
+	int N;
+	scanf("%d\n", &N);
+
+	for(int i=0; i<N; i++){
+		scanf("%s", line[i] ); //左邊的國家名
+		char others[80];//剩下的
+		gets( others );//右邊全部都讀掉
+	}
+
+	qsort( line, N, 80, compare );
+
+	for(int i=0; i<N; i++){
+		printf("%s\n", line[i]);
+	}
+	return 0;
+}
+```
+
+## step03-1
+接下來要統計「每個國家有幾個」, 我們手上的 line[i] 是一堆排好的國家名。可以上下2行比較,相同的,就 ++, 不相同的,就印出答案的數量。上週在 Hardwood Species 有用過這個技巧。今天再多做一個特別的修正,本來2000筆,變成2001筆。把最後一筆之後、不存在的下一筆,利用 line[N][0]=0 把那個不存在的字串設成空的字串。這樣程式就可以用簡單的迴圈運作
+
+```C++
+//Week07-4.cpp step03-1 看是否相同: 相同時 combo++, 不相同時 印出結果
+// 接下來要統計「每個國家有幾個」, 我們手上的 line[i] 是一堆排好的國家名。可以上下2行比較,相同的,就 ++, 不相同的,就印出答案的數量。上週在 Hardwood Species 有用過這個技巧。今天再多做一個特別的修正,本來2000筆,變成2001筆。把最後一筆之後、不存在的下一筆,利用 line[N][0]=0 把那個不存在的字串設成空的字串。這樣程式就可以用簡單的迴圈運作
+#include <stdio.h>
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char line[2001][80];//和今天考試一樣
+int compare( const void *p1, const void *p2 )
+{
+	return strcmp( (char*)p1, (char*)p2 );
+}
+int main()
+{
+	int N;
+	scanf("%d\n", &N);
+	for(int i=0; i<N; i++){
+		scanf("%s", line[i] ); //左邊的國家名
+		char others[80];//剩下的
+		gets( others );//右邊全部都讀掉
+	}
+	
+	qsort( line, N, 80, compare );
+	
+	line[N][0]=0;//最後收尾的多出來的資料, ex.N=2000, line[N]第2001筆
+	int combo=1;
+	for(int i=0; i<N; i++){
+		if( strcmp( line[i], line[i+1] ) == 0 ){ //相同
+			combo++;
+		}else{
+			printf("%s %d\n", line[i], combo );
+			combo=1;//剛剛忘了寫
+		}
+	}
+	return 0;
+}
+```
+
+## step03-2
+
+剛剛的程式有出錯,少了一個combo=1 的斷開動作,需要修正
+
+## step03-3
+
+最後有一點空檔, 老師講解幾週前發的 Jumping Mario 的解題講解
+```C++
+//Week07-5.cpp step03-3 Jumping Mario
+//看懂題目: 原來是數一數, 有幾個往上跳up, 有幾個往下跳 down
+#include <stdio.h>
+int a[100];
+int main()
+{
+	int T, N;
+	scanf("%d", &T);
+	for(int t=1; t<=T; t++){
+		scanf("%d", &N);
+		for(int i=0; i<N; i++){
+			scanf("%d", &a[i] );
+		}
+		int down=0, up=0;
+		for(int i=1; i<N; i++){
+			if( a[i-1] > a[i] ) down++;
+			if( a[i-1] < a[i] ) up++;
+		}
+		printf("Case %d: %d %d\n", t, up, down);
+	}
+
+}
+```
