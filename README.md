@@ -1014,3 +1014,234 @@ int main()
 
 }
 ```
+
+# Week08
+程式設計 Week08 2022-04-14
+
+1. 考試: List of Conquests
+2. 主題: bubble sort 事件
+3. 問問題技巧 Fortran1 Fortran2 Fortran3
+4. 主題: 檔案I/O
+5. 主題: 互動程式設計
+
+因為疫情關係, 本週改線上上課。線上上課時,互動很重要。老師寫了一個程式, 會點同學的名字, 請同學開麥、講話。
+
+## step01-1
+上課考試前,老師講解今天的考試題目 List of Conquests 並示範
+
+```c++
+#include <stdio.h>
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char nation[2001][80];//國家名
+int compare( const void *p1, const void *p2 )
+{
+	return strcmp( (char*)p1, (char*)p2 );
+}
+int main()
+{
+	int N;
+	scanf("%d\n", &N);
+
+	for(int i=0; i<N; i++){
+		scanf("%s", nation[i] );
+		char line[80];//等一下要丟掉
+		gets(line);
+	}//Input OK
+	
+	qsort( nation, N, 80, compare );
+	
+	nation[N][0] = 0;//範圍外的, 變成空字串
+	int combo = 1; //combo重來
+	for(int i=0; i<N; i++){
+		if( strcmp( nation[i], nation[i+1] ) == 0 ){ //上下相同
+			combo++;
+		}else{ //不相同
+			printf("%s %d\n", nation[i], combo );//印答案
+			combo = 1; //combo重來
+		}
+		//printf("%s\n", nation[i] );
+	}//Output OK!
+}
+```
+
+## step01-2
+老師講解網路上,關於泡泡排序法的問題與故事_使用Fortran語言, 請大家看看發問、過程、結果
+
+## step02-1
+本來老師寫了一個程式,要讀入20個人名+20個分數,不過因為太複雜了、大家陣列忘光光,所以老師重寫 week08-1b.cpp 裡面只用1個整數 int grade; 然後看看他在for()迴圈裡讀讀讀123、for()迴圈裡印印印333,讓大家了解意思.zip
+
+```c++
+///Week08-1.cpp step02-1 檔案
+#include <stdio.h>
+#include <string.h>
+///Q: 陣列? 變數?
+char names[20][20]; ///20人(複數),每人名長度20
+int grades[20];///20個分數 (複數)
+int main()
+{
+    ///int N;
+    ///scanf("%d", &N); ///完了,題目沒有N,不好寫
+
+    ///有N用for()迴圈,沒N用while()迴圈
+
+    char name[20];///20個字母
+    int grade;///分數
+    int i=0;
+    while( scanf("%s %d", &name, &grade)==2 ){
+        strcpy(names[i], name); ///names[i] <- name
+        grades[i] = grade; ///grades[i] <- grade
+        i++;
+    }
+    int N = i;
+
+    for(int i=0; i<N ; i++){
+        printf("%s %d\n", names[i], grades[i] );
+    }
+}
+```
+
+```c++
+///Week08-1.cpp step02-1 檔案
+#include <stdio.h>
+
+int main()
+{///假設有3筆資料
+    int grade;
+    for(int i=0; i<3; i++){
+        scanf("%d", &grade);
+    }
+
+    for(int i=0; i<3; i++){
+        printf("%d\n", grade);
+    }
+
+}
+```
+
+## step02-2
+接下來陣列出場。 int grades[3] 有3個整數的陣列, int grade 只有1個整數, 把 grades[i] = grade 把讀到的資料放進陣列裡
+
+```c++
+///Week08-2.cpp step02-2 檔案
+#include <stdio.h>
+int grades[3];///step02-2陣列
+int main()
+{///假設有3筆資料
+    int grade;
+    for(int i=0; i<3; i++){
+        scanf("%d", &grade);
+        grades[i] = grade;
+    }
+
+    for(int i=0; i<3; i++){
+        printf("%d\n", grades[i] );
+    }
+
+}
+```
+
+## step03-1
+接下來,還是在讀資料, 我們有3筆資料, 依序是人名、分數, 總共3筆。利用for迴圈讀, 再把資料複製到陣列裡, 最後印出來
+
+```c++
+///Week08-3.cpp step03-1 檔案
+#include <stdio.h>
+#include <string.h>
+char names[3][20];///3名字, 每個名字最多20字母
+int grades[3];///step02-2陣列
+int main()
+{///假設有3筆資料
+    char name[20];///一個字串 (20個字母)
+    int grade;///一個整數
+    for(int i=0; i<3; i++){
+        scanf("%s", name);///讀入名字
+        scanf("%d", &grade);///讀入分數
+        strcpy( names[i], name );///把名字, 複製到 names[i]陣列
+        grades[i] = grade; ///把分數,進入 grades[i]陣列
+    }
+
+    for(int i=0; i<3; i++){
+        printf("%s 得到 %d\n", names[i], grades[i] );
+    }
+
+}
+```
+
+## step03-2
+開啟檔案的方法,先有一個FILE的指標 fout=fopen( 檔名, 開啟模式), 印東西時很像printf()只是前面加了 f 檔案
+
+```c++
+///Week08-4.cpp 檔案 step03-2
+#include <stdio.h>
+int main()
+{///檔案的指標 要open          開啟方式write+
+    FILE * fout=fopen("檔名.txt", "w+" );
+   fprintf(fout, "Hello 我在檔案裡,哈哈\n");
+
+    printf("Hello World\n");
+}
+```
+
+## step03-3
+我們把結果印出來的同時,再多開啟一個檔案,要write+寫到 file.txt 裡面, 內容用 fprintf(fout, ...) 來做到
+
+```c++
+///Week08-5.cpp step03-3
+#include <stdio.h>
+#include <string.h>
+char names[3][20];///3名字, 每個名字最多20字母
+int grades[3];///step02-2陣列
+int main()
+{///假設有3筆資料
+    char name[20];///一個字串 (20個字母)
+    int grade;///一個整數
+    for(int i=0; i<3; i++){
+        scanf("%s", name);///讀入名字
+        scanf("%d", &grade);///讀入分數
+        strcpy( names[i], name );///把名字, 複製到 names[i]陣列
+        grades[i] = grade; ///把分數,進入 grades[i]陣列
+    }
+    FILE * fout = fopen("file.txt", "w+" );
+    for(int i=0; i<3; i++){
+        printf("%s %d\n", names[i], grades[i] );
+        fprintf(fout, "%s %d\n", names[i], grades[i] );
+    }
+
+}
+```
+
+## step03-4
+讀入檔案,使用 scanf()改寫來的 fscanf()即可
+
+```c++
+///Week08-6.cpp step03-4 讀入 Input 檔案
+#include <stdio.h>
+#include <string.h>
+char names[20][20];
+int grades[20];
+int main()
+{///假設有3筆資料
+    FILE * fin = fopen( "file.txt", "r+" );
+    char name[20];///一個字串 (20個字母)
+    int grade;///一個整數
+    for(int i=0; i<20; i++){
+        fscanf(fin, "%s", name);///讀入名字
+        fscanf(fin, "%d", &grade);///讀入分數
+        strcpy( names[i], name );
+        grades[i] = grade;
+    }
+
+    ///FILE * fout = fopen("file.txt", "w+" );
+    for(int i=0; i<20; i++){
+        printf("%s %d\n", names[i], grades[i] );
+        ///fprintf(fout, "%s %d\n", names[i], grades[i] );
+    }
+
+}
+```
+
+
+## step03-5
+講八卦時間,希望同學能用對的方法問問題,不要用手機拍螢幕Genius。
+
