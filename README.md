@@ -1460,6 +1460,21 @@ step03-2_因為同學不熟 qsort() 及 strcmp() , 老師在今天上課時有�
 
 因為有很多同學對於 strcmp() 不熟, 所以老師把課本第4章的範例跑一次, 加深大家的印象。
 
+```
+strlen() string length
+strcpy() string copy  
+strcmp() string compare
+
+strcpy(a,b) 可用 int a=10
+    或 a=b來理解
+
+strcmp(a,b) 要怎麼理解呢?
+       a-b
+      10-5 得到正的
+       5-5 得到0
+       5-10 得到負的
+```
+
 ```cpp
 ///Week09-6.cpp step03-2 
 ///因為有很多同學對於 strcmp() 不熟, 所以老師把課本第4章的範例跑一次, 加深大家的印象。
