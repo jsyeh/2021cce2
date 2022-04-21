@@ -1245,3 +1245,110 @@ int main()
 ## step03-5
 講八卦時間,希望同學能用對的方法問問題,不要用手機拍螢幕Genius。
 
+
+
+# Week09
+
+## step01-0
+考試之前, 老師再一次做複習, 題目與上週一樣, 是List of Conquests (上週有快4成不會寫。本週約有3成不會寫)
+
+```cpp
+#include <stdio.h> //步驟 1-6
+#include <stdlib.h> //qsort()
+#include <string.h> //strcmp()
+char nation[2001][80];
+
+int compare( const void *p1, const void *p2 )//qsort()
+{
+	return strcmp( (char*)p1, (char*)p2 );//step04
+}
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	
+	for(int i=0; i<N; i++){//Step01: Input
+		scanf("%s", nation[i] );//只用它
+		char line[80];
+		gets(line);//剩下的都讀到 line 不用它
+	}
+
+	qsort( nation, N, 80, compare ); //step03: qsort()
+	
+	nation[N][0]=0;//空字串
+	int combo=1;
+	for(int i=0; i<N; i++){//Step02: Output
+		if( strcmp(nation[i],nation[i+1])==0 ){//相同
+			combo++;//Step05
+		}else{//不相同,印答案,重設combo
+			printf("%s %d\n", nation[i], combo );
+			combo=1;//Step06
+		}
+	}
+}
+```
+## step01-0b
+準備上課前, 老師針對大家作業的問題, 做解釋, 比較多出錯的地方,像是沒有用 Git指令上傳GitHub, 或是有指令錯誤等。也有同學漏上傳檔案。最後老師針對同學的FB訊息問題做回覆,像是疫情相關的考試、補課等。
+
+
+## step01-1
+今天要複習上週的泡泡排序法, 我們教了很多次, 所以再來寫一次。下一節課將會針對它做改良。
+
+```cpp
+///Week09-1.cpp step01-1 bubble sort 簡化 大到小
+#include <stdio.h>
+int grade[10]={9,8,1,2,3, 7,6,5,4,0};
+int main()
+{
+    int N=10;
+    for(int k=0; k<10; k++){///跑很多次,但是到底要幾次?
+        for(int i=0; i<N-1; i++){
+            if( grade[i] < grade[i+1] ){ ///反了
+                int temp=grade[i];
+                grade[i]=grade[i+1];
+                grade[i+1]=temp;
+            }
+        }
+        for(int i=0; i<N; i++) printf("%d ", grade[i] );
+        printf("\n");
+    }
+}
+```
+
+## step02-1
+研究前面的泡泡排序, 會發現「如果提早排好, 卻還是會笨笨的跑剩下的迴圈, 不會提早結束, 可以改進。所以我們在核心的迴圈前面 int change=0; 如果有反過來要交換時 change++, 在核心迴圈的後面 if(change==0) break; 提早離開迴圈。這樣就帥多了。
+
+```cpp
+///Week09-2.cpp step02-1 bubble sort 簡化 大到小
+///如果本來就快要排好了.... 可以提早結束哦!!!!
+#include <stdio.h>
+int grade[10]={9,8,1,2,3, 7,6,5,4,0};
+int main()
+{
+    int N=10;
+    for(int k=0; k<10; k++){///跑很多次,但是到底要幾次?
+        int change=0;///沒有修改
+        for(int i=0; i<N-1; i++){
+            if( grade[i] < grade[i+1] ){ ///反了
+                int temp=grade[i];
+                grade[i]=grade[i+1];
+                grade[i+1]=temp;
+                change++;///有一個修改
+            }
+        }
+        if(change==0) break;///沒有修改,就好了,可以回家了
+        for(int i=0; i<N; i++) printf("%d ", grade[i] );
+        printf("\n");
+    }
+}
+```
+
+
+## step02-2
+從前面的例子, 我們發現for迴圈好像沒有必要, 所以將 for迴圈改掉, 改用 while迴圈取代。同時我們也試了2種, 一種是小到大, 一種是大到小, 記得要差別就在核心的 if()判斷的方向。
+
+## step02-3
+接下來便可以嘗試解決上週的泡泡排序法的進階問題「分數、學號姓名」一起排序。不過我們先解決「分數排序」的部分,比較簡單。裡面的「泡泡排序的核心」也就是一個for()和一個if()裡面有交換,簡單。外面的迴圈可以用 while()也可以用for(), 不過因為用for()比較簡單,可以少很多很行,所以雖然比較沒效率, 還是用它吧。
+
+## step03-1
+在交換分數時,要把名字一起排序,所以我們要知道怎麼做字串的交換,關鍵程式碼是 strcpy()可以把右邊複製到左邊 strcpy(a, b), 那要如何知道是左邊還是右邊呢 可以用 int a=10 來記憶,10會放到a裡面。用 a=b 來想像也可以,把 b的值放到a裡面去。
