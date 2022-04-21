@@ -38,7 +38,7 @@ step01-1 讀入1整數 int a; 再印出來, 截圖上傳。
 「最多2的一天」，是因為本週 2022-02-22 出現很多2，網路上有許多人分享很多2的照片。
 今天的主題目標，是想要判斷 Input 裡，到底出現幾個 '2'。但是經過一個寒假，大家可能忘了如何寫程式。所以老師先利用 CodeBlocks 讓大家熟悉：如何寫一個程式，可以讀入整數，印出整數。在過程中，便能熟悉、回憶如何寫程式。
 
-```C++
+```cpp
 /// week01-1.cpp step01-1 scanf()讀資料
 ///CodeBlocks: File-New-Empty 另存新檔
 #include <stdio.h>
@@ -58,7 +58,7 @@ int main()
 
 剛剛複習「寫出最簡單的程式範例」，可以讀入整數a、印出整數a。接下來要改寫成字母/字元，程式碼有90%相同。讓同學輕輕鬆鬆建立信心。
 
-```C++
+```cpp
 /// week01-2.cpp step01-2 scanf()讀 字元、字串
 ///CodeBlocks: File-New-Empty 另存新檔
 #include <stdio.h>
@@ -83,7 +83,7 @@ int main()
 今天的第1個小時比較輕鬆，但在第2小時，要開始變複雜了。首先要改用字元陣列（字串）來讀入資料。接下來是使用 for迴圈，配合 if判斷，每次找到一個 `'2'` 就印出來。
 為了簡化程式的理解，for迴圈故意使用 `for(int i=0; i<2000; i++)` 其實是不恰當的，因為檢測到「讀入字串」之外殘留的地方。比較好的方式，應該是要利用 字串長度做範圍（如任務4所示），或使用上學期教過的 `for(int i=0; line[i]!=0; i++)`。不過因為第1週上課，刻意想教得簡單一點，所以直接拿陣列長度 2000 來當for迴圈的範圍。剛好 char line[2000]是在外面宣告的 global 變數，會被清為0，所以平安沒事。
 
-```C++
+```cpp
 ///week01-3.cpp step02-1 讀入1字串 char line[2000]; 
 ///要配合 for迴圈 if判斷!
 #include <stdio.h>
@@ -101,7 +101,7 @@ int main()
 ## 任務4
 4. step02-2 在瘋狂程設-第01週,將剛剛的程式改寫,能讀入很多行。而且再利用字串函式 strlen() 可以得到字長的長度 int N=strlen(line) 之後便能讓 迴圈變成 for(int i=0; i<N; i++) 逐一針對有效的字母做比較。利用練習模式, 截圖上傳。
 
-```C++
+```cpp
 ///week01-4.cpp
 ///step02-2 在瘋狂程設-第01週,將剛剛的程式改寫,能讀入很多行
 ///顏色不對, 因為是 Python。
@@ -130,7 +130,7 @@ int main()
 ## 任務5
 5. step03-1 承接上題, 在瘋狂程設裡, 把它寫完。其中需要 利用迴圈前面sum=0 迴圈中間 sum+=ans 迴圈後面把sum印出來。這個迴圈,是 while( scanf("%s", line)==1 ) 的這種神奇的迴圈, 以後會經常用到, 能讀入「不知道有幾筆資料」的神奇迴圈哦! 利用練習模式, 截圖上傳。
 
-```C++
+```cpp
 ///week01-5.cpp
 ///step03-1 "總共有幾個2" 用迴圈。
 ///迴圈有 for(知道長度) 有 while(不確定長度時,用while)
@@ -201,7 +201,7 @@ https://github.com/jsyeh/2021cce2
 ## step01-0
 考試「Tell me the frequencies」的簡化版,只解決Input 及 Output, 老師在考前複習、考後講解同學出錯的地方.zip
 
-```C++
+```cpp
 ///Week04-0.cpp 今天的考試題目
 ///我們想要解決瘋狂程設裡,Tell me the frequencies
 ///先把 Input 利用 while( gets(line) ) 解決
@@ -225,7 +225,7 @@ int main()
 ## step01-1
 上週教完Tell me the frequencies這題,同學還沒有真的搞懂, 所以我們今天再重做一次。這次搭配別人的程式,我們一步步看程式碼從Input,Outpu搞定後, 現在利用字串的迴圈,把字母統計好。最後照著字母順序,從大到小印出來。.zip
 
-```C++
+```cpp
 ///Week04-1.cpp step01-1
 ///我們想要解決瘋狂程設裡,Tell me the frequencies
 ///先用今天考試的程式,解決Input/Output
@@ -259,7 +259,7 @@ int main()
 ## step02-1
 最後,頻率從小郅大, 再字母從大到小倒著印,好像完成了
 
-```C++
+```cpp
 ///Week04-2.cpp step02-1
 ///我們想要解決瘋狂程設裡,Tell me the frequencies
 ///最後, 頻率從小到大, 再字母倒著印出來,
@@ -289,7 +289,8 @@ int main()
 
 ## step02-2
 使用1到1000的寫法其實有問題。可以更快。因此,蕭立人老師的影片, 是利用 max 出現頻率的最多次數,來當迴圈的上界.zip
-```C++
+
+```cpp
 ///Week04-3.cpp step02-2
 ///我們想要解決瘋狂程設裡,Tell me the frequencies
 ///最後, 頻率從小到大(1到max), 再字母倒著印出來
@@ -322,7 +323,8 @@ int main()
 
 ## step03-1
 想要把程式變得更快,我們想要排序完再印。不過要怎麼排序呢, 我們要先發明一個結構 struct DATA{char c; int ans;}; 是一組基礎的資料結構, 再用 struct DATA list1; 宣告1個, 或是 struct DATA lists[100]; 宣告100個。請利用CodeBlocks實作看看
-```C++
+
+```cpp
 ///Week04-4.cpp step03-1 struct結構 (方便排序用)
 #include <stdio.h>
 struct DATA{
@@ -343,7 +345,7 @@ int main()
 ## step03-2
 今天的主題是資料結構的struct結構,所以我們照著課本寫,並將利用sorting的方法來把今天的程式用更有效率的方法秀出來。不過因為停電,最後這個作業就不交了。
 
-```C++
+```cpp
 ///Week04-5.cpp step03-3 (因為停電, 下週再續)
 ///使用資料結構, 配合 sort排序, 來完成任務
 #include <stdio.h>
@@ -401,7 +403,8 @@ int main()
 
 ## step01-0
 本週考試Tell me the frequencies,考試前複習、考試後示範容易出錯的地方
-```C++
+
+```cpp
 #include <stdio.h>
 char line[2000];
 int main()
@@ -429,7 +432,8 @@ int main()
 
 ## step01-1
 今天的主題是排序,老師先複習上週的selection sort選擇排序法,會用到的技巧有(1)陣列宣告、陣列初始值,(2)最後用for迴圈印出排好的答案,(3)左手i,右手j,其中 右手的 for(int j=i+1 容易出錯, (4) if(a[i]大於a[j]) 大小不對就交換是
-```C++
+
+```cpp
 ///week05-1.cpp step01-1 selection sort
 ///今天的主題是排序,老師先複習上週的selection sort選擇排序法,會用到的技巧有(1)陣列宣告、陣列初始值,(2)最後用for迴圈印出排好的答案,(3)左手i,右手j,其中 右手的 for(int j=i+1 容易出錯, (4) if(a[i]>a[j]) 大小不對就交換。
 #include <stdio.h> ///排序
@@ -454,7 +458,8 @@ int main()
 
 ## step02-1
 接下來複習泡泡排序法。和selection sort一樣是2個迴圈,裡面1個if判斷。但是寫法有點特別,我們先寫裡面的迴圈 for(int i=0; i小於10-1; i++) 裡面再比較 a[i] 及 a[i+1] 其中的 10-1 很難理解,希望大家能搞懂。外面再加上一個for(int k=0; k小於10-1; k++) 跑了10-1次。這個10-1次也要想想,與裡面的理由不一樣
-```C++
+
+```cpp
 ///Week05-2.cpp step02-1 bubble sort
 #include <stdio.h> ///泡泡排序
 int a[10]={7,8,9, 1,2,3, 6,5,4, 0};
@@ -483,7 +488,7 @@ step02-2_快速排序qsort(a,100,sizeof(int), comp) 這真的很難懂。尤其�
 Quick Sort 只要約 90萬次,解決!!!!
 找到1個人放中間,左邊 右邊
 
-```C++
+```cpp
 ///Week05-3.cpp 思考,如果陣列的大小是10萬
 ///有10萬個數字要排序.... 要跑幾次?
 #include <stdio.h>
@@ -525,7 +530,8 @@ int main()
 
 ## step03-1
 今天的主題是 Hardwood species 硬木的名字排序, 它有點難,所以我們先把 Input 及 Output 搞定。就像上週考試時教過的 while(gets(line)) 及 火車頭 +車廂 +車廂 +車廂, 另外有在scanf()裡面多讀入2個跳行。還有遇到空白行時 if( line[0]==0 ) break; 請試試看吧
-```C++
+
+```cpp
 ///Week05-4.cpp step03-1 解決 Input
 ///(1)用今天考試過的 while(gets(line)) 讀一整行
 ///(2)火車頭 +車廂 +車廂 +車廂
@@ -549,7 +555,8 @@ int main()
 
 ## step03-2
 接下來結合 step02-2 qsort() 及step03-1 題目 InputOutput想把字串排序。不過時間不夠,我們就下週再繼續
-```C++
+
+```cpp
 ///Week05-5.cpp step03-2 結合前2個程式
 #include <stdio.h>
 #include <stdlib.h>///qsort()需要它
@@ -812,7 +819,7 @@ int main()
 ## step01-1
 上課考試前, 老師示範今天的考試題目「字串排序」,,並在考試之後,針對同學錯的地方進行解說
 
-```C++
+```cpp
 //Week07-0.cpp step01-1 
 //今天考字串排序, 老師針對同學錯的地方進行解說
 
@@ -851,7 +858,7 @@ int main()
 今天的主角,是Don Giovanni這個情聖,到底喜歡多少女生。我們先利用瘋狂程設,把 UVA 10420 List of Conquests 的 Input 搞定。
 
 
-```C++
+```cpp
 ///Week07-1.cpp 解決 UVA10420 List of Conquests
 ///step02-1 今天的主角,是Don Giovanni這個情聖,到底喜歡多少女生。
 ///我們先利用瘋狂程設,把 UVA 10420 List of Conquests 的 Input 搞定。
@@ -878,7 +885,7 @@ int main()
 ## step02-2
 接續前一個程式, 我們想要把它「照字母順序」排序, 使用了 qsort() 及對應的 compare()函式
 
-```C++
+```cpp
 ///Week07-2.cpp step02-2 qsort()
 ///step02-2 接續前一個程式, 我們想要把它「照字母順序」排序, 使用了 qsort() 及對應的 compare()函式
 
@@ -909,9 +916,9 @@ int main()
 ```
 
 
-##
+## step02-3
 
-```C++
+```cpp
 //Week07-3.cpp 解決 UVA10420 List of Conquests
 // step02-3 國家名   人名(很多空格)
 //          scanf()  gets()
@@ -946,7 +953,7 @@ int main()
 ## step03-1
 接下來要統計「每個國家有幾個」, 我們手上的 line[i] 是一堆排好的國家名。可以上下2行比較,相同的,就 ++, 不相同的,就印出答案的數量。上週在 Hardwood Species 有用過這個技巧。今天再多做一個特別的修正,本來2000筆,變成2001筆。把最後一筆之後、不存在的下一筆,利用 line[N][0]=0 把那個不存在的字串設成空的字串。這樣程式就可以用簡單的迴圈運作
 
-```C++
+```cpp
 //Week07-4.cpp step03-1 看是否相同: 相同時 combo++, 不相同時 印出結果
 // 接下來要統計「每個國家有幾個」, 我們手上的 line[i] 是一堆排好的國家名。可以上下2行比較,相同的,就 ++, 不相同的,就印出答案的數量。上週在 Hardwood Species 有用過這個技巧。今天再多做一個特別的修正,本來2000筆,變成2001筆。把最後一筆之後、不存在的下一筆,利用 line[N][0]=0 把那個不存在的字串設成空的字串。這樣程式就可以用簡單的迴圈運作
 #include <stdio.h>
@@ -990,7 +997,7 @@ int main()
 ## step03-3
 
 最後有一點空檔, 老師講解幾週前發的 Jumping Mario 的解題講解
-```C++
+```cpp
 //Week07-5.cpp step03-3 Jumping Mario
 //看懂題目: 原來是數一數, 有幾個往上跳up, 有幾個往下跳 down
 #include <stdio.h>
@@ -1029,7 +1036,7 @@ int main()
 ## step01-1
 上課考試前,老師講解今天的考試題目 List of Conquests 並示範
 
-```c++
+```cpp
 #include <stdio.h>
 #include <stdlib.h> //qsort()
 #include <string.h> //strcmp()
@@ -1071,7 +1078,7 @@ int main()
 ## step02-1
 本來老師寫了一個程式,要讀入20個人名+20個分數,不過因為太複雜了、大家陣列忘光光,所以老師重寫 week08-1b.cpp 裡面只用1個整數 int grade; 然後看看他在for()迴圈裡讀讀讀123、for()迴圈裡印印印333,讓大家了解意思.zip
 
-```c++
+```cpp
 ///Week08-1.cpp step02-1 檔案
 #include <stdio.h>
 #include <string.h>
@@ -1101,7 +1108,7 @@ int main()
 }
 ```
 
-```c++
+```cpp
 ///Week08-1.cpp step02-1 檔案
 #include <stdio.h>
 
@@ -1122,7 +1129,7 @@ int main()
 ## step02-2
 接下來陣列出場。 int grades[3] 有3個整數的陣列, int grade 只有1個整數, 把 grades[i] = grade 把讀到的資料放進陣列裡
 
-```c++
+```cpp
 ///Week08-2.cpp step02-2 檔案
 #include <stdio.h>
 int grades[3];///step02-2陣列
@@ -1144,7 +1151,7 @@ int main()
 ## step03-1
 接下來,還是在讀資料, 我們有3筆資料, 依序是人名、分數, 總共3筆。利用for迴圈讀, 再把資料複製到陣列裡, 最後印出來
 
-```c++
+```cpp
 ///Week08-3.cpp step03-1 檔案
 #include <stdio.h>
 #include <string.h>
@@ -1171,7 +1178,7 @@ int main()
 ## step03-2
 開啟檔案的方法,先有一個FILE的指標 fout=fopen( 檔名, 開啟模式), 印東西時很像printf()只是前面加了 f 檔案
 
-```c++
+```cpp
 ///Week08-4.cpp 檔案 step03-2
 #include <stdio.h>
 int main()
@@ -1186,7 +1193,7 @@ int main()
 ## step03-3
 我們把結果印出來的同時,再多開啟一個檔案,要write+寫到 file.txt 裡面, 內容用 fprintf(fout, ...) 來做到
 
-```c++
+```cpp
 ///Week08-5.cpp step03-3
 #include <stdio.h>
 #include <string.h>
@@ -1214,7 +1221,7 @@ int main()
 ## step03-4
 讀入檔案,使用 scanf()改寫來的 fscanf()即可
 
-```c++
+```cpp
 ///Week08-6.cpp step03-4 讀入 Input 檔案
 #include <stdio.h>
 #include <string.h>
@@ -1246,8 +1253,15 @@ int main()
 講八卦時間,希望同學能用對的方法問問題,不要用手機拍螢幕Genius。
 
 
-
 # Week09
+程式設計 Week09 2022-04-21
+1. 考試: List of Conquests
+2. 複習: Bubble Sort 檔案版
+3. 改進 Bubble Sort: 迴圈次數、更多項、更多項
+4. C++ 物件 vs. C 結構
+5. C++ STL (Standard Template Library)
+
+(回答同學課堂作業的分數、期中問卷問題)
 
 ## step01-0
 考試之前, 老師再一次做複習, 題目與上週一樣, 是List of Conquests (上週有快4成不會寫。本週約有3成不會寫)
@@ -1347,8 +1361,118 @@ int main()
 ## step02-2
 從前面的例子, 我們發現for迴圈好像沒有必要, 所以將 for迴圈改掉, 改用 while迴圈取代。同時我們也試了2種, 一種是小到大, 一種是大到小, 記得要差別就在核心的 if()判斷的方向。
 
+```cpp
+///Week09-3.cpp step02-2 bubble sort 「小到大」
+///如果本來就快要排好了.... 可以提早結束哦!!!!
+#include <stdio.h>
+int grade[10]={9,8,1,2,3, 7,6,5,4,0};
+int main()
+{
+    int N=10;
+    while(1){///改用while迴圈 (跑很多次,但是到底要幾次?)
+        int change=0;///沒有修改
+        for(int i=0; i<N-1; i++){
+            if( grade[i] > grade[i+1] ){ ///反了
+                int temp=grade[i];
+                grade[i]=grade[i+1];
+                grade[i+1]=temp;
+                change++;///有一個修改
+            }
+        }
+        if(change==0) break;///沒有修改,就好了,可以回家了
+        for(int i=0; i<N; i++) printf("%d ", grade[i] );
+        printf("\n");
+    }
+}
+```
+
 ## step02-3
 接下來便可以嘗試解決上週的泡泡排序法的進階問題「分數、學號姓名」一起排序。不過我們先解決「分數排序」的部分,比較簡單。裡面的「泡泡排序的核心」也就是一個for()和一個if()裡面有交換,簡單。外面的迴圈可以用 while()也可以用for(), 不過因為用for()比較簡單,可以少很多很行,所以雖然比較沒效率, 還是用它吧。
 
+```cpp
+///Week09-4.cpp step02-3 在瘋狂程設裡, 不只要排序很多項。想要排序更多項哦!
+///我們先把Input 及 Output 改好。不過在交換時, 我們只換一些些而已, 下一個版本要改進
+#include <stdio.h>
+char name[100][80];//最多100筆資料,每筆80個字母
+int grade[100];//最多100筆資料,每筆是int整數
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){  //為什麼有加 &
+		scanf("%s %d", name[i], &grade[i] );
+	}
+
+	for(int k=0; k<N-1; k++){//排序囉!!!
+		for(int i=0; i<N-1; i++){//先寫泡泡核心
+			if( grade[i] < grade[i+1] ){
+				int temp=grade[i];//交換
+				grade[i]=grade[i+1];
+				grade[i+1]=temp;
+			}
+		}
+	}
+	for(int i=0; i<N; i++){
+		printf("%s %d\n", name[i], grade[i] );
+	}
+}
+```
+
 ## step03-1
 在交換分數時,要把名字一起排序,所以我們要知道怎麼做字串的交換,關鍵程式碼是 strcpy()可以把右邊複製到左邊 strcpy(a, b), 那要如何知道是左邊還是右邊呢 可以用 int a=10 來記憶,10會放到a裡面。用 a=b 來想像也可以,把 b的值放到a裡面去。
+
+```cpp
+///Week09-5.cpp step03-1 把要名字一起排序!!!
+#include <stdio.h>
+#include <string.h> //strcpy()
+char name[100][80];//最多100筆資料,每筆80個字母
+int grade[100];//最多100筆資料,每筆是int整數
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){  //為什麼有加 &
+		scanf("%s %d", name[i], &grade[i] );
+	}
+
+	for(int k=0; k<N-1; k++){//排序囉!!!
+		for(int i=0; i<N-1; i++){//先寫泡泡核心
+			if( grade[i] < grade[i+1] ){
+				int temp=grade[i];//交換
+				grade[i]=grade[i+1];
+				grade[i+1]=temp;
+
+				char tempName[80]; //字串怎麼交換? strcpy()
+				strcpy( tempName, name[i] );
+				strcpy( name[i], name[i+1] );
+				strcpy( name[i+1], tempName );
+			}
+		}
+	}
+	for(int i=0; i<N; i++){
+		printf("%s %d\n", name[i], grade[i] );
+	}
+}
+```
+
+## step03-2 
+step03-2_因為同學不熟 qsort() 及 strcmp() , 老師在今天上課時有先複習 qsort(), 而最後一個課堂作業, 則是再教 strcpy(a,b) 及 strcmp(a,b) 讓大家熟悉。課本上也有對應的介紹, 在第4章。
+
+因為有很多同學對於 strcmp() 不熟, 所以老師把課本第4章的範例跑一次, 加深大家的印象。
+
+```cpp
+///Week09-6.cpp step03-2 
+///因為有很多同學對於 strcmp() 不熟, 所以老師把課本第4章的範例跑一次, 加深大家的印象。
+#include <stdio.h>
+#include <string.h>
+char strA[] = "ABC";
+char strB[] = "ABCD";
+int main()
+{
+    int c = strcmp( "B", "C" );
+    printf(" B - C 得到 %d\n", c );
+
+    c = strcmp(strA, strB);
+    printf("%s %s 得到 %d\n", strA, strB, c );
+}
+```
