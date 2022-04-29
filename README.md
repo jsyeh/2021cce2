@@ -1491,3 +1491,240 @@ int main()
     printf("%s %s 得到 %d\n", strA, strB, c );
 }
 ```
+
+# Week10
+程式設計 Week10 2022-04-29
+1. 考試: 「學號姓名、分數」排序
+2. 主題: 物件排序
+3. 主題: 撲克牌洗牌
+4. 主題: 互動程式設計
+
+也就是今天有2大主題
+
+1. C++ STL 很強, 做出它的sort
+2. 互動程式設計:寫小遊戲 (還可給家人玩)
+
+## step01-0
+考試前, 老師先示範練習,希望大家可以考試順利。
+
+```cpp
+#include <stdio.h>
+#include <string.h> //strcpy() string copy
+char name[100][30], tempName[30];
+int grade[100];
+int main()
+{
+	int N;//Input
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){
+		scanf("%s %d", name[i], &grade[i] );
+	}
+	for(int k=0; k<N-1; k++){//Sorting
+		for(int i=0; i<N-1; i++){
+			if( grade[i] < grade[i+1] ){//not correct, swap
+				int temp = grade[i];
+				grade[i] = grade[i+1];
+				grade[i+1] = temp;
+				strcpy( tempName, name[i] );
+				strcpy( name[i], name[i+1] );
+				strcpy( name[i+1], tempName );
+			}
+		}
+	}
+	for(int i=0; i<N; i++){//Output
+		printf("%s %d\n", name[i], grade[i] );
+	}
+}
+```
+
+## step01-1
+今天考試題目,我們改寫成,利用檔案來 Input, 將學會的技巧是,如何利用 CodeBlocks 在同一個目錄中,存 input.txt 這個文字檔, 再於 week10-1.cpp 裡,把檔案的內容讀進來, 再printf()出來
+
+1. CodeBlocks 新開檔案,存檔 input.txt
+2. 把瘋狂程設今天考試 Input拿來用
+3. 利用 `FILE * fin = fopen("input.txt", "r");`開啟檔案
+4. 利用 `fscanf()`可以從檔案讀入
+5. 再模仿今天考試的程式, 把 Input(檔案)及 Output都搞定
+
+下面是 input.txt
+```
+20
+A001 100
+A002 85
+A003 27
+A004 58
+A005 53
+A006 37
+A007 79
+A008 59
+A009 46
+A010 83
+A011 92
+A012 76
+A013 39
+A014 60
+A015 64
+A016 94
+A017 81
+A018 47
+A019 28
+A020 62
+```
+下面是程式
+```cpp
+///Week10-1.cpp step01-1
+///小心,要用 .cpp 副檔名
+///(1)讀檔案 FILE * fin=fopen("檔名", "r");
+#include <stdio.h>
+char name[100][30];
+int grade[100];
+int main()
+{
+    FILE * fin = fopen("input.txt", "r");
+    int N;
+  ///scanf("%d", &N);///以前寫法
+    fscanf( fin, "%d", &N );
+    ///只是輔助 printf("讀到N是: %d\n", N);
+    for(int i=0; i<N; i++){
+      ///scanf("%s %d", name[i], &grade[i] );
+        fscanf( fin, "%s %d", name[i], &grade[i] );
+        ///只是輔助 printf("讀到了 %s %d\n", name[i], grade[i] );
+    }
+
+    for(int i=0; i<N; i++){
+        printf("%s %d\n", name[i], grade[i] );
+    }
+}
+```
+
+## step02-1
+接續前一個程式,把排序寫完。目的,是為了要做比較的範本,因為等一下要用 C++ 的 class 及 sort 做改寫, 有大量簡化的改變。
+```cpp
+///Week10-2.cpp step02-1 小心,要用 .cpp 副檔名
+///(1)讀檔案 (2)要做排序
+#include <stdio.h>
+#include <string.h>
+char name[100][30], tempName[30];
+int grade[100];
+int main()
+{
+    FILE * fin = fopen("input.txt", "r");
+    int N;
+    fscanf( fin, "%d", &N );
+    for(int i=0; i<N; i++){
+        fscanf( fin, "%s %d", name[i], &grade[i] );
+    }
+
+    for(int k=0; k<N-1; k++){
+        for(int i=0; i<N-1; i++){
+            if( grade[i] < grade[i+1] ){
+                int temp=grade[i];
+                grade[i] = grade[i+1];
+                grade[i+1] = temp;
+                strcpy( tempName, name[i] );
+                strcpy( name[i], name[i+1] );
+                strcpy( name[i+1], tempName );
+            }
+        }
+    }
+
+    for(int i=0; i<N; i++){
+        printf("%s %d\n", name[i], grade[i] );
+    }
+}
+```
+
+## step02-2
+改利用 C++ 的 `class` 來修改, 變得很容易讀。 `class Student {...};` 大寫的`Student` 設計好形狀, 用這個形狀來宣告 `Student student[20];` 小寫的student有20個, 接下來拿 `student[i].grade` 及 `student[i+1].grade` 做比較, 再整個 `student[i]` 及 `student[i+1]` 做交換,好像清楚很多。
+
+```cpp
+///Week10-3.cpp step02-2 小心,要用 .cpp 副檔名
+///(1)讀檔案 (2)要做排序 (3) 要用 C++ class 物件
+#include <stdio.h>
+class Student { ///(大寫)學生 裡面有
+public: ///公開給別人用,所以 main()可以存取到裡面的資料
+    char name[30];///名字(30字母)
+    int grade;///分數
+};
+Student student[100];///(大寫)Student student[100];//有100個student
+int main()
+{
+    FILE * fin = fopen("input.txt", "r");
+    int N;
+    fscanf( fin, "%d", &N );
+    for(int i=0; i<N; i++){
+        fscanf( fin, "%s %d", student[i].name, &student[i].grade );
+    }
+    for(int k=0; k<N-1; k++){
+        for(int i=0; i<N-1; i++){
+            if( student[i].grade < student[i+1].grade ){
+                Student temp = student[i];
+                student[i] = student[i+1];
+                student[i+1] = temp;
+            }
+        }
+    }
+    for(int i=0; i<N; i++){
+        printf("%s %d\n", student[i].name, student[i].grade );
+    }
+}
+```
+
+
+## step02-3
+最後我們再用 C++ 的 vector 及  sort 做改寫, 程式碼突然變得很好讀。
+
+```cpp
+///Week10-4.cpp step02-3 小心,要用 .cpp 副檔名
+///(1)讀檔案 (2)要做排序 (3) 要用 C++ class 物件, (4) std::sort
+#include <stdio.h>
+#include <vector> ///付出的代價 std::vector<Student>
+#include <algorithm> ///付出的代價 std::sort() 直接排序,帥!
+class Student { ///(大寫)學生 裡面有
+public: ///公開給別人用,所以 main()可以存取到裡面的資料
+    char name[30];///名字(30字母)
+    int grade;///分數
+};
+///Student student[100];///(大寫)Student student[100];//有100個student
+bool compare( Student a, Student b ){
+    return (a.grade > b.grade) ;
+}
+int main()
+{
+    FILE * fin = fopen("input.txt", "r");
+    int N;
+    fscanf( fin, "%d", &N );
+
+    std::vector<Student> student(20);
+    for(int i=0; i<N; i++){
+        fscanf( fin, "%s %d", student[i].name, &student[i].grade );
+    }
+
+    std::sort( student.begin(), student.end(), compare );
+
+    for(int i=0; i<N; i++){
+        printf("%s %d\n", student[i].name, student[i].grade );
+    }
+}
+```
+
+## step03-1
+回顧最近3週的sort排序相關的事件及程式。了解今天的程式解法其實在3週前的事件就已經有人提出來, 但是因為需要一些背景知識,所以同學一開始會因為看不懂而忽略珍貴的解答。現在大家有練習過2次,我們上課就練習到這裡。要同學要自己再多練習幾次,才會熟悉。
+
+## step03-2
+今天的第二個主題,是互動程式設計,老師挑選MIT Media Lab 發明的 Processing 語言,使用幾天前剛出來的最新版,配合老師的中文介面翻譯,教大家size(),background(),fill(),textSize(), text() 等,可以畫出彩色的字。另外也了解Color Selector色彩選擇器的使用,挑選適合的色彩來用。
+
+```processing
+//File-Pref 設定,超大字型
+//Processing語言,由MIT Media Lab 發明,適合初學者
+//在Android, Web, Mac, iPhone,適合畫圖、互動、寫遊戲
+size(300,300);//大視窗
+background(#FFFFBF);///背景色
+String name="Good";
+textSize(50);//字的大小: 50
+fill(#3D277C);///填充色:暗暗的
+text(name, 50,50);
+
+fill(#FA1C2B);///填充色:紅紅的
+text(name, 50,100);
+```
