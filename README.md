@@ -1728,3 +1728,239 @@ text(name, 50,50);
 fill(#FA1C2B);///填充色:紅紅的
 text(name, 50,100);
 ```
+
+# Week11
+
+## step01-0
+今天考試題目與上週相同, 但老師多教了 C++ STL 可以讓程式碼更好寫、更好懂(只是要付出代價、不見得程式比較短), 因此在考試前, 老師將2種方法都示範過一次
+
+舊方法
+```cpp
+#include <stdio.h>
+#include <string.h> //strcpy()
+char name[100][30], tempName[30];
+int grade[100];
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	for(int i=0; i<N; i++){
+		scanf("%s %d", name[i], &grade[i]);
+	}
+	for(int k=0; k<N-1; k++){
+		for(int i=0; i<N-1; i++){
+			if( grade[i] < grade[i+1] ){
+				int temp=grade[i];
+				grade[i] = grade[i+1];
+				grade[i+1] = temp;
+				strcpy( tempName, name[i] );
+				strcpy( name[i], name[i+1] );
+				strcpy( name[i+1], tempName );
+			}
+		}
+	}
+	for(int i=0; i<N; i++){
+		printf("%s %d\n", name[i], grade[i]);
+	}
+}
+```
+
+新方法 C++ STL
+
+```cpp
+#include <stdio.h>
+#include <vector> //not <vector.h>
+#include <algorithm> //std::sort()
+class Student{
+public:
+	char name[30];
+	int grade;
+};
+bool compare( Student a, Student b ){
+	return (a.grade>b.grade) ;
+}
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	
+	std::vector<Student> stu(N);
+	for(int i=0; i<N; i++){
+		scanf("%s %d", stu[i].name, &stu[i].grade);
+	}
+	std::stable_sort( stu.begin(), stu.end(), compare );	
+	for(int i=0; i<N; i++){
+		printf("%s %d\n", stu[i].name, stu[i].grade);
+	}
+}
+```
+
+## step01-1
+上週教了 C++ STL 的新方法後, 我們今天要把一些舊題目,用新方法來做,會方便很多。現在要嘗試  Hardwood Species 的 input, 利用 CodeBlocks 的 fopen()開啟 input.txt, 再看能不能順利印出來。
+
+input.txt
+```
+1
+Red Alder
+Ash
+Aspen
+Basswood
+Ash
+Beech
+Yellow Birch
+Ash
+Cherry
+Cottonwood
+Ash
+Cypress
+Red Elm
+Gum
+Hackberry
+White Oak
+Hickory
+Pecan
+Hard Maple
+White Oak
+Soft Maple
+Red Oak
+Red Oak
+White Oak
+Poplan
+Sassafras
+Sycamore
+Black Walnut
+Willow
+```
+
+```cpp
+///Week11-1.cpp step01-1 讀入 Hardwood那題
+#include <stdio.h>
+int main()
+{
+    int T;
+    //scanf("%d", &T);
+    FILE * fin = fopen("input.txt", "r");
+    fscanf(fin, "%d", &T);///讀檔
+    printf("你讀到了T: %d\n", T);
+}
+```
+
+## step02-1
+接下來繼續利用FILE的輸入,來將全部資料讀入,其fgets()與之前教過的gets()有一些不同皫地方,像是參數不同、讀入的跳行不同等。
+
+```cpp
+///Week11-2.cpp step02-1 讀入 Hardwood那題
+///多學會了 fgets()
+/// gets(line)  vs. fgets(line, 長度, fin)
+///    跳行會不見    跳行還會在
+#include <stdio.h>
+char line[100];
+int main()
+{
+    int T;
+    //scanf("%d", &T);
+    FILE * fin = fopen("input.txt", "r");
+    fscanf(fin, "%d", &T);///讀檔
+    printf("你讀到了T: %d\n", T);
+    /// scanf() vs.  gets()
+    ///fscanf() vs. fgets()
+    ///while( gets(line) ){
+    while( fgets(line, 100, fin) ){
+        printf("讀到了= %s =\n", line );///做處理
+    }
+}
+```
+
+## step02-2
+接下來介紹C++ STL 的 map 可以將左邊的東西, 查表對照到右邊的東西。用起來很像變形的陣列, 可以使用 table[line]++ 來讓讀到的東西統計數字++。另外要小心fgets()在讀入資料時,會有結尾的跳行需要處理掉。
+
+```cpp
+///Week11-3.cpp step02-2
+/// C++ STL 存資料!!! 再用 for迴圈印出來
+#include <stdio.h>
+#include <string.h>
+///#include <vector>
+#include <map> ///std::map<左邊, 右邊>
+#include <string> ///沒有 .h 哦
+char line[100];
+int main()
+{
+    int T;
+    FILE * fin = fopen("input.txt", "r");
+    fscanf(fin, "%d", &T);///讀檔
+    ///std::map< 字串, 整數 > 可以把字串,map對應成ans
+    std::map< std::string, int > table;
+
+    while( fgets(line, 100, fin) ){
+        line[ strlen(line)-1 ] = 0;  ///做處理,刪掉最後的跳行
+        printf("讀到了= %s =\n", line );
+        table[ line ] ++;
+    }
+
+}
+```
+
+## step02-3
+再利用 c++11 的語法, 用 for迴圈印出來
+
+```cpp
+///Week11-4.cpp step02-3
+/// C++ STL 存資料!!!
+#include <stdio.h>
+#include <string.h>
+///#include <vector>
+#include <map> ///std::map<左邊, 右邊>
+#include <string> ///沒有 .h 哦
+char line[100];
+int main()
+{
+    int T;
+    FILE * fin = fopen("input.txt", "r");
+    fscanf(fin, "%d", &T);///讀檔
+    ///std::map< 字串, 整數 > 可以把字串,map對應成ans
+    std::map< std::string, int > table;
+
+    while( fgets(line, 100, fin) ){
+        line[ strlen(line)-1 ] = 0;  ///做處理,刪掉最後的跳行
+        printf("讀到了= %s =\n", line );
+        table[ line ] ++;
+    }
+    for( const auto &tree : table ){
+        printf("%s %d\n", tree.first.c_str(), tree.second );
+    }
+
+}
+```
+
+## step03-1
+今天教得有點不順, 所以老師嘗試重新將 List of Conquests 這題重新使用 map 來實作。不過遇到語法中 c++11 沒能預設被使用的問題, 所以放棄。下週重教這部分, 希望能改用循序漸近的方式, 一步步帶大家熟悉這些內容。
+
+```cpp
+#pragma GCC diagnostic warning "-std=c++11"
+#include <stdio.h>
+#include <string>
+#include <map>
+
+char nation[2001][80];
+int main()
+{
+	int N;
+	scanf("%d", &N);
+
+	std::map< std::string, int > table;// naiton name, to ans
+	for(int i=0; i<N; i++){
+		scanf("%s", nation[i] );
+
+		table[ nation[i] ]  ++;
+
+		char line[80];
+		gets(line);
+	}
+
+
+	for( const auto & one : table ){
+		printf("%s %d\n", one.first.c_str(), one.second);
+	}
+
+}
+```
