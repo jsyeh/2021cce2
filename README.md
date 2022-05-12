@@ -1964,3 +1964,194 @@ int main()
 
 }
 ```
+
+# Week12
+
+## step01-1
+step01-1_今天考試的題目C++ STL 的方法做排序。但因線上上課不方便考試,所以改成課堂作業, 請用老師上週的教法, 有些 C 的語法, 及 C++ 的 class, vector, stable_sort 來完成, 使用瘋狂程設、練習模式, 截圖上傳。
+
+```cpp
+#include <stdio.h>
+#include <vector>
+#include <algorithm>
+class Student{
+public: //!!!! : not ;
+	char name[30];
+	int grade;
+};
+bool compare( Student a, Student b ){
+	return  a.grade > b.grade  ;
+}
+int main()
+{
+	int N;
+	scanf("%d", &N);
+	std::vector<Student> stu(N);
+	for(int i=0; i<N; i++){ //(1) Input
+		scanf("%s %d", stu[i].name, &stu[i].grade );
+	}
+
+	std::stable_sort(stu.begin(), stu.end(), compare );
+	
+	for(int i=0; i<N; i++){ //(2) Output
+		printf("%s %d\n", stu[i].name, stu[i].grade );
+	}
+}
+```
+## step01-2
+step01-2_為了幫大家慢慢熟悉C++,老師買了課本的C++繪本電子檔,接著教一些新的內容,先從 iostream 的 std 的 cin 及 cout 來示範。
+
+```cpp
+///Week12-2.cpp step01-2
+///改用 C++ 的 std::cin   std::cout
+///在這個範例,練習 C++ 的 Input 及 Output 方法
+#include <iostream>
+
+int main()
+{
+	int N;
+	std::cin >> N;
+
+	std::cout << "I got N:" << N;
+
+	return 0;
+}
+```
+
+## step02-1
+學了 cin 及 cout 後, 我們利用 class 發明一個裡面有name[30]及 int grade 的東西, 在使用時,使用 for迴圈讀入很多個, 再利用 for迴圈印出很多個, 其中 stu[i].name 是第i個學生的name名字, stu[i].grade 是第i個學生的grade分數
+
+```cpp
+///Week12-3.cpp step02-1
+///改用 C++ 的 class and std::cin   std::cout
+///在這個範例,練習 C++ 的 Input 及 Output 方法
+#include <iostream>
+class Student{
+public:
+	char name[30];
+	int grade;
+};
+
+Student stu[100];
+int main()
+{
+	int N;
+	std::cin >> N;
+	for(int i=0; i<N; i++){
+		std::cin >> stu[i].name;
+		std::cin >> stu[i].grade;
+	}
+	std::
+	for(int i=0; i<N; i++){
+		std::cout << stu[i].name << " ";
+		std::cout << stu[i].grade << std::endl ;
+	}                                  ///end line
+
+	return 0;
+}
+```
+
+## step02-2
+因為程式裡有許多 std加上2個冒號的怪符號, 代表 std裡面的cin 或 std裡面的cout, 所以可以把這個 namespace省略, 使用 using namespace std; 後, 便能大量省略程式了。
+
+```cpp
+///Week12-4.cpp step02-2
+///使用 using namespace std 來簡化程式裡的 std::
+#include <iostream>
+using namespace std;
+class Student{
+public:
+	char name[30];
+	int grade;
+};
+Student stu[100];
+int main()
+{
+	int N;
+	cin >> N;
+	for(int i=0; i<N; i++){
+		cin >> stu[i].name;
+		cin >> stu[i].grade;
+	}///std裡面的cin
+
+	for(int i=0; i<N; i++){
+		cout << stu[i].name << " ";
+		cout << stu[i].grade << endl ;
+	}                                  ///end line
+	return 0;
+}
+```
+
+## step02-3
+接下來,再介紹 C++ 的高級功能 vector 配合大於小於的符號,可以有一個任意大小的陣列哦,只要逐一 v.push_back(數)便可以加到後面, 再利用 v[i] 來取出來。
+
+了解C++ STL 的 vector 簡單使用方式,包括如何宣告、如何push_back()、如何像陣列一樣使用它。
+
+
+```cpp
+///Week12-5.cpp step02-3
+/// C++ STL 存檔時一定要 .cpp
+#include <iostream> ///為了 cout
+#include <vector>
+using namespace std;
+
+int main()
+{
+    vector<int> v;///沒說有多大,就0格
+
+    v.push_back(10); ///加大1格, 放入10
+    v.push_back(20); ///加大1格, 放入20
+    v.push_back(30); ///加大1格, 放入30
+    ///所以現在有3個
+    for(int i=0; i<3; i++){
+        cout << v[i];
+        cout << endl;
+    }
+}
+```
+
+
+
+## step03-1
+實習課的「銘傳銘傳會考」的題目, 有幾題同學不熟悉,所以老師進行講解示範。首先介紹如何找到最小值、最大值。
+
+```cpp
+//Q: 迴圈不知道怎麼寫, 因為不知道有幾個
+//Q: 最大值怎麼做? 最小值怎麼做?
+#include <stdio.h>
+int main()
+{///Trick!你要找最小的? 我先放上最大的 (拋磚引玉)
+	int max=-99999, min=99999, n; //反過來操作
+	for(int i=0; i<30; i++){
+		scanf("%d", &n );
+		if( n == 0 ) break;
+		if( n > max ) max = n;//max最大值。如果有人比max還大,老大換人當
+		if( n < min ) min = n;
+		//printf("%d ", n);
+	}
+	printf("[%d,%d]", min, max);
+}//Output 啊,格式不對,先把格式弄對
+```
+
+
+## step03-3
+實習課的題目,把三個數字,組出最大的數字,再加1。裡面用到了大量的if()判斷, 便能完成這題。但是要小心 if-else 來避免出現重覆進入的狀況。
+
+```cpp
+//Q: 5哪裡來的?
+//Q: 大到小嗎?
+//Q: 怎麼找最大值? 怎麼找最小值?
+#include <stdio.h>
+int main()
+{
+	int a, b, c;
+	scanf("%d %d %d", &a, &b, &c);
+	if( a>=b && b>=c ) printf("%d", a*100+b*10+c+1);
+	else if( b>=a && a>=c ) printf("%d", b*100+a*10+c+1);
+	else if( a>=c && c>=b ) printf("%d", a*100+c*10+b+1);
+	else if( c>=a && a>=b ) printf("%d", c*100+a*10+b+1);
+	else if( b>=c && c>=a ) printf("%d", b*100+c*10+a+1);
+	else if( c>=b && b>=a ) printf("%d", c*100+b*10+a+1);
+
+}
+```
