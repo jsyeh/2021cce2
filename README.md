@@ -2155,3 +2155,202 @@ int main()
 
 }
 ```
+
+# Week13
+
+## step01-1
+step01-1_利用 size() background() fill() textSize() text() 等, 複習之前教過的秀文字及色彩
+
+複習上次教過的互動程式設計Processing畫字
+File-Preference (把字型調大、標楷體)
+1. size()大小
+2. background()背景
+3. fill()填充的色彩
+4. textSize()文字的大小
+5. text()秀文字
+
+File-Save week13_1_text
+(要用底線,不能用-減號、不能用中文、不能用任何符號)
+(因為 Java 的檔名有限制!)(不能數字開頭)
+
+```processing
+size(300,300);//大小
+background(#FFFAE8);//淡黃背景色
+fill(#97C4FA);//天藍色
+textSize(50);//字的大小
+text("Hello", 50,50);//秀文字
+```
+
+## step01-2
+step01-2_複習上次教過的互動程式設計Processing互動,加上void setup()及void draw(), 大部分程式放 setup(), text() 的座標改成mouseX,mouseY 並放到draw()裡,便會看到很多殘影的Hello
+
+複習上次教過的互動程式設計Processing互動
+Ctrl-N 開新檔案 File-Save 存成 week13_2_mouse
+1. void setup() 設定
+2. void draw() 畫圖
+3. 把剛剛的程式,移一些過去
+
+```processing
+void setup(){
+  size(300,300);
+  background(#FFFAE8);
+  fill(#97C4FA);
+  textSize(50);
+}
+void draw(){
+  text("Hello", mouseX, mouseY);
+}
+```
+
+## step01-3
+step01-3_剛剛看到文字的座標預設是在左下角,可能不合乎直覺,所以可在setup()裡使 textAlign(CENTER,CENTER); 改成座標是對字的中心點。寫了3行英文的晚餐,接下來將會讓大家用mouse來決定晚餐吃什麼
+
+用滑鼠,來決定晚餐吃什麼!!!
+
+1. Ctrl-N 新程式 week13_3_dinner
+2. 畫面有點糟, 要清背景 background()放在 draw()裡面
+3. 畫出晚餐的文字 Dinner1, Dinner2, Dinner3 (英文)
+4. 為了解決字的座標 用正中間來當座標, 會比較清楚
+5. textAlign(CENTER,CENTER); 文字顯示時,對齊座標正中心
+
+```processing
+void setup(){//只做1次
+  size(300,300);
+  fill(#97C4FA);
+  textSize(50);
+  textAlign(CENTER,CENTER);
+}
+void draw(){//每秒60次
+  background(#FFFAE8);
+  text("Dinner 1", 150,  50);
+  text("Dinner 2", 150, 150);
+  text("Dinner 3", 150, 250);
+  //text("Hello", mouseX, mouseY);
+}
+```
+
+## step02-1
+step02-1_利用mouse來決定吃什麼。有if()及 rect() 還有 int choice=mouseX%3;的到選擇
+
+在 Processing 裡 Ctrl-N 開新的程式, 存成 week13_4_dinner_mouse
+1. 程式和剛剛相似, 但是多了框框選擇 rect(x1, y1,  w, h)
+2. 利用 int choice = mouseX%3 來得到 0,1,2 的可能的值
+3. 利用 if(choice == 0) 畫第一個框框, 然後第二個第三個
+
+```processing
+void setup(){//只做1次
+  size(300,300);
+  fill(#97C4FA);
+  textSize(50);
+  textAlign(CENTER,CENTER);
+}
+void draw(){//每秒60次
+  background(#FFFAE8);
+  text("Dinner 1", 150,  50);
+  text("Dinner 2", 150, 150);
+  text("Dinner 3", 150, 250);
+  int choice = mouseX % 3; //0,1,2
+  if(choice==0) rect( 0, 25, 50,50);
+  if(choice==1) rect( 0,125, 50,50);
+  if(choice==2) rect( 0,225, 50,50);
+}
+```
+
+
+
+## step02-2
+要把畫面做得更好!!! 而且更有感覺!!!
+Ctrl-N, Save 存成 week13_5_dinner_random 亂數來決定
+1. random() 可以亂數決定1個數字 ex. random(3) => 0.0 .... 2.9999 <3.0
+
+```processing
+void setup(){//只做1次
+  size(300,300);
+  fill(#97C4FA);
+  textSize(50);
+  textAlign(CENTER,CENTER);
+}
+int choice = -1;//-1沒選, 0,1,2有選
+void draw(){//每秒60次
+  background(#FFFAE8);
+  text("Dinner 1", 150,  50);
+  text("Dinner 2", 150, 150);
+  text("Dinner 3", 150, 250);
+  if(choice==0) ellipse( 30, 50, 50,50);
+  if(choice==1) ellipse( 30,150, 50,50);
+  if(choice==2) ellipse( 30,250, 50,50);
+}
+void mousePressed(){//當mouse按下去時
+  choice = int( random(3) ) ; //取出整數0,1,2
+}          //會在0.00~2.99(不包括3.0)
+```
+
+## step03-1
+
+step03-1_想要將我們的程式放上網頁,讓大家可以玩, 所以切換到 p5.js 模式, 再把程式碼進行自動翻譯轉換, 執行可以在Chrome看到結果。存檔 week13 後, 請將程式碼放上GitHub 的 你的帳號裡 你的帳號.github.io 這個倉庫, 5分鐘便可以看到程式上網。要小心, 檔名要一致,也就是確定 index.html裡的檔名不是亂碼哦
+
+想要放到網頁裡! 需要翻譯!!
+Processing to p5.js
+
+- 步驟1: 右上角 Java 改 p5.js
+- 步驟2: week13_5_dinner_random 程式 去轉檔
+- https://pde2js.herokuapp.com/ 貼在左邊, 按 Convert
+- 步驟3: 把右邊程式碼, 貼到 Processing p5.js 這個窗
+- Run 會跑出來哦!
+- 步驟4: 把程式存檔成 桌面的 week13 把它放上 GitHub
+- `https://github.com/你的帳號/你的帳號.github.io`
+- 你之後可以在 `https://你的帳號.github.io/week13` 看到你程式上網了!!!
+
+
+```processing
+// 步驟1: 右上角 Java 改 p5.js
+// 步驟2: week13_5_dinner_random 程式 去轉檔
+// https://pde2js.herokuapp.com/ 貼在左邊, 按 Convert
+// 步驟3: 把右邊程式碼, 貼到 Processing p5.js 這個窗
+// Run 會跑出來哦!
+// 步驟4: 把程式存檔成 桌面的 week13 把它放上 GitHub
+// https://github.com/你的帳號/你的帳號.github.io
+// 你之後可以在 https://你的帳號.github.io/week13 看到你程式上網了!!!
+
+function setup() {
+    initializeFields();
+    // 只做1次
+    createCanvas(300, 300);
+    fill(color(0x97, 0xC4, 0xFA));
+    textSize(50);
+    textAlign(CENTER, CENTER);
+}
+
+// -1沒選, 0,1,2有選
+var choice;
+
+function draw() {
+    // 每秒60次
+    background(color(0xFF, 0xFA, 0xE8));
+    text("Dinner 1", 150, 50);
+    text("Dinner 2", 150, 150);
+    text("Dinner 3", 150, 250);
+    if (choice == 0)
+        ellipse(30, 50, 50, 50);
+    if (choice == 1)
+        ellipse(30, 150, 50, 50);
+    if (choice == 2)
+        ellipse(30, 250, 50, 50);
+}
+
+function mousePressed() {
+    // 當mouse按下去時
+    // 取出整數0,1,2
+    choice = int(random(3));
+}
+
+function initializeFields() {
+    choice = -1;
+}
+```
+
+## step03-2
+step03-2_有同學大一上沒修過我的課,還沒加入 GitHub Pages 網頁的倉庫, 就只要記得 Add Repo 新增倉庫, 倉庫名是 你的帳號.github.io  同時記得勾選 Add README.md。假設你的帳號是 twfarmer 便能有你的網站 twfarmer.github.io 
+
+之後老師便與大家解釋今天上課時點名都問「值日生」可是進度好像太快, 因為值日生本來動作就比較快。我們的週數還夠, 所以之後會教「互動程式設計」讓大家享受寫程式的樂趣。
+
