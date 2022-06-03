@@ -1,4 +1,4 @@
-//Week15_4_gopher_soil8x24 小地鼠 + 土壤
+//Week15_5_gopher_stone 小地鼠 + 土壤 + 石頭
 PImage img1, img2, img3, img4, gopher, soil, bg;
 void setup(){//設定
   size(640,480);

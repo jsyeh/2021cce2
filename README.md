@@ -2471,3 +2471,223 @@ void draw(){
 ## step03-2
 step03-2_最後10分鐘,複習Git的指令,解釋git clone 遇到 already exists 的原因、配合 git pull 從雲端拉下來更新。更新目錄後 git add . 再 git commit 最後 git push 完成
 
+
+# Week15
+
+## step01-1
+讀入小地鼠的圖片, 從Teams下載, 利用上週教的 PImage img1, img2, img3, img4 來宣告變數, 再用 loadImage(檔名)來讀入圖片
+
+```processing
+//Week15_1_gopher 小地鼠
+PImage img1, img2, img3, img4;
+void setup(){//設定
+  size(640,480);
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+}
+void draw(){//畫圖
+  image(img1, 0, 0);
+  image(img2, 100, 0);
+  image(img3, 200, 0);
+  image(img4, 300, 0);
+}
+```
+
+## step01-2
+新增 PImage gopher 並利用keyPressed()來調整gopher對應的圖,以便按下方向鍵時,gopher會用正確方向的圖
+
+```processing
+//Week15_2_gopher_keyPressed 小地鼠
+PImage img1, img2, img3, img4, gopher;
+void setup(){//設定
+  size(640,480);
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+  gopher=img1;
+}
+void draw(){//畫圖
+  background(255);
+  image(gopher, 0, 0);
+}
+void keyPressed(){//按下某個按鍵
+  if( keyCode == DOWN) gopher=img2;
+  if( keyCode == LEFT) gopher=img3;
+  if( keyCode == RIGHT) gopher=img4;
+}
+```
+## step01-3
+想要控制gopher圖片放的位置, 所以利用 x y 變數 image(gopher, x,y); 來改變, 再利用 dx dy 來修改 x y 的值。按下按鍵時,修改dx dy 的值, 放開鍵盤時 keyReleased()會將 dx dy 清為0, 並將gopher圖片還原成預設的圖片
+
+```processing
+//Week15_3_gopher_keyPressed_keyReleased
+PImage img1, img2, img3, img4, gopher;
+void setup(){//設定
+  size(640,480);
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+  gopher = img1;
+}
+int x=0, y=0, dx=0, dy=0;
+void draw(){//畫圖
+  background(255);
+  image(gopher, x, y);
+  x += dx;  y += dy;
+}
+void keyPressed(){//按下某個按鍵
+  if( keyCode == DOWN) { gopher = img2; dx= 0; dy=1;}
+  if( keyCode == LEFT) { gopher = img3; dx=-1; dy=0;}
+  if( keyCode == RIGHT){ gopher = img4; dx=+1; dy=0;}
+}
+void keyReleased(){
+  gopher = img1; dx=0; dy=0;
+}
+```
+## step02-1
+加上背景圖bg及土壤soil,想讓主角gopher保持在畫面的固定高度,所以y方向移動時,改去移動土壤的圖片高度,讓視覺上gopher有在移動的感覺
+
+```processing
+//Week15_4_gopher_soil8x24 小地鼠 + 土壤
+PImage img1, img2, img3, img4, gopher, soil, bg;
+void setup(){//設定
+  size(640,480);
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+  soil = loadImage("soil8x24.png");//在Teams可載
+  bg = loadImage("bg.jpg");//在Teams可載
+  gopher = img1;
+}
+int x=300, y=0, dx=0, dy=0;
+void draw(){//畫圖
+  image(bg, 0, 0);//background(255);
+  image(soil, 0, 160-y);//捲軸, 改成土壤往上走!!!
+  image(gopher, x, 80);//本來是 image(gopher, x, y);
+  x += dx;  y += dy;
+}
+void keyPressed(){//按下某個按鍵
+  if( keyCode == DOWN) { gopher = img2; dx= 0; dy=1;}
+  if( keyCode == LEFT) { gopher = img3; dx=-1; dy=0;}
+  if( keyCode == RIGHT){ gopher = img4; dx=+1; dy=0;}
+}
+void keyReleased(){
+  gopher = img1; dx=0; dy=0;
+}
+```
+
+## step02-2
+台科大的題目要求,土壞裡有些地方會放石頭。所以利用石頭的陣列 來標示石頭在哪裡,並且利用for迴圈在對應石頭的地方再放一張石頭的圖。其中圖片座標的算法因為有捲軸式移動, 所以要稍調整到對應的位置
+
+```processing
+//Week15_5_gopher_stone 小地鼠 + 土壤 + 石頭
+PImage img1, img2, img3, img4, gopher, soil, bg;
+void setup(){//設定
+  size(640,480);
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+  soil = loadImage("soil8x24.png");//在Teams可載
+  bg = loadImage("bg.jpg");//在Teams可載
+  gopher = img1;
+}
+int x=300, y=0, dx=0, dy=0;
+void draw(){//畫圖
+  image(bg, 0, 0);//background(255);
+  image(soil, 0, 160-y);//捲軸, 改成土壤往上走!!!
+  image(gopher, x, 80);//本來是 image(gopher, x, y);
+  x += dx;  y += dy;
+}
+void keyPressed(){//按下某個按鍵
+  if( keyCode == DOWN) { gopher = img2; dx= 0; dy=1;}
+  if( keyCode == LEFT) { gopher = img3; dx=-1; dy=0;}
+  if( keyCode == RIGHT){ gopher = img4; dx=+1; dy=0;}
+}
+void keyReleased(){
+  gopher = img1; dx=0; dy=0;
+}
+```
+## step03-1
+gopher在移動,前面做的效果是讓背景動、gopher保持畫面的位置, 以便做出24層土壤的效果。但是如果gopher已經移到最下面的6層時,土壞的圖用完了, 所以要讓gopher的位置也能再往下移, 所以設計 int y2=0 並在最下面時, 換算出 y2的值, 來調整gopher、土壞、石頭的位置。
+
+另外網友想要有「遇到石頭時速度變慢」的效果, 所以利用 speed變數, 依照是否有石頭, 來調整是3倍速、2倍速、1倍速的效果。
+
+```processing
+//Week15_5_gopher_stone 小地鼠 + 土壤
+PImage img1, img2, img3, img4, gopher, soil, bg, stone1, stone2;
+int [][]stone={ //Java 的陣列 (C/C++的方括號在右邊)
+  {1, 0, 0, 1, 0, 0, 0, 0},
+  {0, 1, 0, 1, 0, 0, 0, 0},
+  {0, 0, 1, 1, 0, 0, 0, 0},
+  {0, 0, 0, 1, 0, 0, 0, 0},
+  {0, 0, 0, 0, 1, 0, 0, 0},
+  {0, 0, 0, 0, 0, 1, 0, 0},
+  {0, 0, 0, 0, 0, 0, 1, 0},
+  {0, 0, 0, 0, 0, 0, 0, 1},//1-8
+  {0, 1, 1, 0, 0, 1, 1, 0},
+  {1, 0, 0, 1, 1, 0, 0, 1},
+  {1, 0, 0, 1, 1, 0, 0, 1},
+  {0, 1, 1, 0, 0, 1, 1, 0},
+  {0, 1, 1, 0, 0, 1, 1, 0},
+  {1, 0, 0, 1, 1, 0, 0, 1},
+  {1, 0, 0, 1, 1, 0, 0, 1},
+  {0, 1, 1, 0, 0, 1, 1, 0},//9-15
+  {0, 1, 2, 0, 1, 2, 0, 1},
+  {1, 2, 0, 1, 2, 0, 1, 2},
+  {2, 0, 1, 2, 0, 1, 2, 0},
+  {0, 1, 2, 0, 1, 2, 0, 1},
+  {1, 2, 0, 1, 2, 0, 1, 2},
+  {2, 0, 1, 2, 0, 1, 2, 0},
+  {0, 1, 2, 0, 1, 2, 0, 1},
+  {1, 2, 0, 1, 2, 0, 1, 2},//17-24
+};
+void setup(){//設定
+  size(640,480);//最後6層 6*80=480, 上面會有 (24-6)*80
+  img1 = loadImage("groundhogIdle.png");
+  img2 = loadImage("groundhogDown.png");
+  img3 = loadImage("groundhogLeft.png");
+  img4 = loadImage("groundhogRight.png");
+  soil = loadImage("soil8x24.png");
+  bg = loadImage("bg.jpg");
+  stone1 = loadImage("stone1.png");//在Teams可載
+  stone2 = loadImage("stone2.png");//在Teams可載
+  gopher = img1;
+}
+int x=300, y=0, dx=0, dy=0;
+void draw(){//畫圖
+  image(bg, 0, 0);//背景的天空 background(255);
+  int y2=0; //在最下面的地獄
+  if( y > (24-6)*80 ) y2=y-(24-6)*80;//在最下面的地獄
+  image(soil, 0, 160-y+y2);//捲軸, 改成土壤往上走!!!
+  int speed=3;
+  for(int i=0; i<24; i++){//左手i
+    for(int j=0; j<8; j++){//右手j
+      if( stone[i][j]==1 ){
+        image(stone1, 80*j, 80*i+160-y+y2);
+        //if(如果小地鼠的座標 與 80*j 80*i 很接近) 走慢一點
+        if( dist(x,y-80, 80*j, 80*i)<40 ) speed=2;
+      }else if(stone[i][j]==2){
+        image(stone1, 80*j, 80*i+160-y+y2);
+        image(stone2, 80*j, 80*i+160-y+y2);
+        if( dist(x,y-80, 80*j, 80*i)<40 ) speed=1;
+      }
+    }
+  }
+  image(gopher, x, 80+y2);//本來是 image(gopher, x, y);
+  x += dx*speed;  y += dy*speed;
+}
+void keyPressed(){//按下某個按鍵
+  if( keyCode == DOWN) { gopher = img2; dx= 0; dy=1;}
+  if( keyCode == LEFT) { gopher = img3; dx=-1; dy=0;}
+  if( keyCode == RIGHT){ gopher = img4; dx=+1; dy=0;}
+}
+void keyReleased(){
+  gopher = img1; dx=0; dy=0;
+}
+```

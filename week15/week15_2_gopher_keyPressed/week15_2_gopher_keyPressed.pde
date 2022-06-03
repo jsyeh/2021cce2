@@ -1,4 +1,4 @@
-//Week15_1_gopher 小地鼠
+//Week15_2_gopher_keyPressed 小地鼠
 PImage img1, img2, img3, img4, gopher;
 void setup(){//設定
   size(640,480);
