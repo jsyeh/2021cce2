@@ -2691,3 +2691,231 @@ void keyReleased(){
   gopher = img1; dx=0; dy=0;
 }
 ```
+
+
+# Week16
+
+## step01-1 
+step01-1_講解完網路發生的程式語言之亂後,老師想要把網友的程式一步步寫出來。首先是有 void keyPressed()裡面可以修改 line = 你要加的字。String line則是可以宣告一個字串(比C語言簡單), 這時候按下按鍵便能秀出你的key是什麼
+
+void keyPressed()左手讀入WSAD(右手會用方向鍵)
+
+```processing
+//week16_keyPressed_key_keyCode
+void setup(){
+  size(300,300);
+}
+String line="";
+void draw(){
+  background(#FFFFF2);
+  textSize(50);
+  fill(0); text(line, 10,50);
+}
+void keyPressed(){
+  line = "Now key: " + key;
+}
+```
+
+
+## step01-2
+step01-2_對於 void keyPressed() 想要了解更多, 利用 String line 將 key 及 keyCode 都印出來。另外在 void keyReleased()放開按鍵時, 讓 line 清空。
+
+```processing
+//week16_keyPressed_key_keyCode
+void setup(){
+  size(300,300);
+}
+String line="";
+void draw(){
+  background(#FFFFF2);
+  textSize(50);
+  fill(0); text(line, 10,50);
+}
+void keyPressed(){
+  line = "Now key: " + key;
+  line += "\nkeyCode: " + keyCode;
+}
+void keyReleased(){
+  line = "";
+}
+```
+
+## step01-3
+step01-3_開新的程式, 要把 void keyPressed() 讓一個圓球移動。在外面宣告 int x=200, y=150; 在 void keyPressed()裡面, 按照 key 的值來改變 x,y 的值, 便能讓 ellipse(x,y, 30,30) 移動位置。
+
+```processing
+//week16_key_control_x_y
+void setup(){
+  size(400,300);
+}
+int x=200, y=150;
+void draw(){
+  background(#FFFFF2);
+  ellipse(x, y, 30, 30);
+}
+void keyPressed(){
+  if( key=='a' ) x -= 2;
+  if( key=='d' ) x += 2;
+  if( key=='w' ) y -= 2;
+  if( key=='s' ) y += 2;
+}
+```
+
+
+## step02-1
+想要有2個人同時玩, 就規劃左邊WASD, 右邊用方向鍵。
+
+
+```processing
+//week16_two_player_key_keyCode
+//需求: 左邊有人:WASD, 右邊有人:方向鍵
+void setup(){
+  size(400,300);
+}
+int x=100, y=150, x2=300, y2=150;
+void draw(){
+  background(#FFFFF2);
+  ellipse(x, y, 30, 30);
+  ellipse(x2, y2, 30, 30);
+}
+void keyPressed(){//同時按,只有1個有反應
+  if( key=='a' ) x -= 2;
+  if( key=='d' ) x += 2;
+  if( key=='w' ) y -= 2;
+  if( key=='s' ) y += 2;
+  if( keyCode==LEFT ) x2 -= 2;
+  if( keyCode==RIGHT) x2 += 2;
+  if( keyCode==UP )   y2 -= 2;
+  if( keyCode==DOWN ) y2 += 2;
+}
+```
+
+step02-1b_想要有2個人同時玩, 就規劃左邊WASD, 右邊用方向鍵。可以同時按2個按鍵,因為會用 x += vx; y += vy; 來做到改變位置。在 WASD key 及 UP,DOWN,LEFT,RIGHT 的 keyCode 都做一樣的處理。void keyPressed()去改vx vy, void keyReleased() 把 vx vy 設成0, 便能做出2人互動小遊戲的鍵盤控制了
+
+
+為解決只有1個鍵能有反應, 稍做修改
+
+```processing
+//week16_two_player_key_keyCode_vx_vy
+void setup(){
+  size(400,300);
+}
+int x=100, y=150, x2=300, y2=150;//位置
+int vx=0, vy=0, vx2=0, vy2=0;//速度
+void draw(){
+  background(#FFFFF2);
+  ellipse(x, y, 30, 30);
+  ellipse(x2, y2, 30, 30);
+  x += vx;  y += vy;
+  x2+= vx2; y2+= vy2;
+}
+void keyPressed(){ //可以同時2個鍵 右+上=右上
+  if( key=='a' ) vx = -2;
+  if( key=='d' ) vx = +2;
+  if( key=='w' ) vy = -2;
+  if( key=='s' ) vy = +2;
+  if( keyCode==LEFT ) vx2 = -2;
+  if( keyCode==RIGHT) vx2 = +2;
+  if( keyCode==UP )   vy2 = -2;
+  if( keyCode==DOWN ) vy2 = +2;
+}
+void keyReleased(){
+  if( key=='a' || key=='d' ) vx = 0;
+  if( key=='w' || key=='s' ) vy = 0;
+  if( keyCode==LEFT || keyCode==RIGHT) vx2 = 0;
+  if( keyCode==UP || keyCode==DOWN ) vy2 = 0;
+}
+```
+
+## step02-2
+step02-2_想做個五子棋,先把棋盤做出來, 利用 line()畫線, 利用for迴圈畫很多線。利用 void setup() 及 void draw() 讓程式可以互動。利用 void mousePressed() 把 bx=mouseX; by=mouseY; 來改變黑子的位置。
+
+先用 for 迴圈畫很多 line()
+```processing
+//week16_go_for_line
+size(450,450);
+background(#F5D665);
+//line(0,  50, 450,  50);鷹架1
+//line(0, 100, 450, 100);鷹架2
+//line(0, 150, 450, 150);鷹架3
+for(int y=50; y<450; y+=50){
+  line(0,   y, 450,   y);
+}//迴圈真好用 9行變2行
+//line( 50, 0, 50, 450);鷹架1
+//line(100, 0,100, 450);應架2
+for(int x=50; x<450; x+=50){
+  line(  x, 0,  x, 450);
+}
+```
+
+改成利用 void setup() 及 void draw() 及 void mousePressed()
+讓程式可以互動。利用 void mousePressed() 把 bx=mouseX; by=mouseY; 來改變黑子的位置
+
+```processing
+//week16_go_for_line_mousePressed_mouseX_mouseY
+void setup(){
+  size(450,450);
+}
+int bx=0, by=0;
+void draw(){
+  background(#F5D665);
+  for(int y=50; y<450; y+=50){
+    line(0, y, 450, y);
+  }
+  for(int x=50; x<450; x+=50){
+    line(x, 0, x, 450);
+  }
+  fill(0);
+  ellipse( mouseX, mouseY, 40,40);
+  ellipse( bx, by, 40, 40);
+}
+void mousePressed(){
+  bx=mouseX; by=mouseY;
+}
+```
+
+## step03-1
+step03-1 五子棋做出來。首先是先宣告陣列 int [] bx=new int [100]; int [] by=new int [100]; int N=0; 棋盤上有N個棋子, 一開始是 0 個棋子。再利用 for(迴圈)來把 N個棋子畫出來。void mousePressed() 會把 bx[N]=mouseX; by[N]=mouseY; N++; 來設定棋子的位置。最後 if(i%2==0) fill(0);
+
+```processing
+//week16_go_many_black_white
+void setup(){
+  size(450,450);
+}
+int []bx=new int[100]; //在 Java 的陣列
+int []by=new int[100]; //和C/C++/C#不同
+int N=0; //現在有 N 的棋子
+void draw(){
+  background(#F5D665);
+  for(int y=50; y<450; y+=50){
+    line(0, y, 450, y);
+  }
+  for(int x=50; x<450; x+=50){
+    line(x, 0, x, 450);
+  }
+  for(int i=0; i<N; i++){
+    if(i%2==0) fill(0);//2倍數,黑
+    else fill(255); //白
+    ellipse( bx[i], by[i], 40, 40);
+  }
+  if(N%2==0) fill(0);//2倍數,黑
+  else fill(255); //白
+  ellipse( mouseX, mouseY, 40,40);
+}
+void mousePressed(){
+  bx[N]=mouseX; by[N]=mouseY;
+  N++;
+}
+```
+
+## step03-2
+step03-2_把五子棋變成網頁互動程式。(0)先把程式寫好, (1) 把程式貼到 pde2js.herokuapp.com 轉好 p5.js 程式, (2) 開啟 Proecessing 的p5.js模式,貼上程式,存檔, 再把 index.html 裡面第9行改成 go.js , 最後go目錄上傳到你的github.io帳號,全世界便可以看到你的程式了
+
+程式要變成 p5.js 網頁版,有幾個步驟 
+- (0) Java程式先寫好
+- (1) copy程式, 貼到 https://pde2js.herokuapp.com/
+- (2) 把網頁右邊的程式碼, 貼到剛剛開的 p5.js 視窗
+- (3) 按執行,會跳出 127.0.0.1 的本機臨時網頁
+- (4) 另存新檔 go (碁) 小心, index.html 第8行改 go.js
+- (5) 登入 GitHub, 開你的 帳號.github.io 的repo倉庫
+- (6) Add 把 go 目錄拉上去, 等5分鐘,便可 帳號.github.io/go 
